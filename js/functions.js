@@ -18,3 +18,25 @@ function extractIntegerFromString(sourceValue){
   return parseFloat(integerCharsString);
 }
 
+function stringWithBeginningCharacters(sourceString, needLength, characters){
+  sourceString = sourceString ?? '';
+  characters = characters ?? '';
+
+  const needPrefixlength = (needLength ?? 0) - sourceString.length;
+
+  if (needPrefixlength <= 0 || characters.length === 0){
+    return sourceString;
+  }
+
+  const numberOfPrefixes = Math.floor(needPrefixlength / characters.length);
+  const pieceLength = needPrefixlength % characters.length;
+
+  let prefix = '';
+  for (let i = 0; i < numberOfPrefixes; i++) {
+    prefix += characters;
+  }
+
+  const piece = characters.substring(0, pieceLength);
+
+  return piece + prefix + sourceString;
+}

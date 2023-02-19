@@ -1,29 +1,25 @@
-const checkStringLessOrGivenLength = (sourceString, needLength) => sourceString.length <= needLength;
+const checkStringLessOrGivenLength = (sourceString = '', needLength = 0) => sourceString.length <= needLength;
 checkStringLessOrGivenLength('', 0);
 
-const checkStringIsPalindrome = (sourceString) => {
-  sourceString = (sourceString ?? '').replace(/\s/g, '');
-  const srcArray = sourceString.split('');
+const checkStringIsPalindrome = (sourceString = '') => {
+  const spacelessString = sourceString.replace(/\s/g, '');
+  const srcArray = spacelessString.split('');
   const reverseString = srcArray.reverse().join('');
-  return reverseString.toLowerCase() === sourceString.toLowerCase();
+  return reverseString.toLowerCase() === spacelessString.toLowerCase();
 };
 checkStringIsPalindrome('');
 
-const extractIntegerFromString = (sourceValue) => {
-  const srcString = `${sourceValue ?? ''}`;
-  const integerCharsString = srcString.replace(/[^0-9]/g, '');
+const extractIntegerFromString = (sourceValue = '') => {
+  const integerCharsString = sourceValue.replace(/[^0-9]/g, '');
   if (integerCharsString.length === 0) {
     return NaN;
   }
-  return parseFloat(integerCharsString);
+  return parseInt(integerCharsString, 10);
 };
 extractIntegerFromString('');
 
-const stringWithBeginningCharacters = (sourceString, needLength, characters) => {
-  sourceString = sourceString ?? '';
-  characters = characters ?? '';
-
-  const needPrefixlength = (needLength ?? 0) - sourceString.length;
+const stringWithBeginningCharacters = (sourceString = '', needLength = 0, characters = '') => {
+  const needPrefixlength = needLength - sourceString.length;
 
   if (needPrefixlength <= 0 || characters.length === 0) {
     return sourceString;

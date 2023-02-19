@@ -1,5 +1,5 @@
-const checkStringMatchesLength = (sourceString, needLenth) => sourceString.length === needLenth;
-checkStringMatchesLength('', 0);
+const checkStringLessOrGivenLength = (sourceString, needLength) => sourceString.length <= needLength;
+checkStringLessOrGivenLength('', 0);
 
 const checkStringIsPalindrome = (sourceString) => {
   sourceString = (sourceString ?? '').replace(/\s/g, '');

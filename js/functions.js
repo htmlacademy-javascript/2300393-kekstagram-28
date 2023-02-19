@@ -1,30 +1,31 @@
-function checkStringMatchesLength(sourceString, needLenth){
-  return sourceString.length === needLenth;
-}
+const checkStringMatchesLength = (sourceString, needLenth) => sourceString.length === needLenth;
+checkStringMatchesLength('', 0);
 
-function checkStringIsPalindrome(sourceString){
+const checkStringIsPalindrome = (sourceString) => {
   sourceString = (sourceString ?? '').replace(/\s/g, '');
   const srcArray = sourceString.split('');
   const reverseString = srcArray.reverse().join('');
   return reverseString.toLowerCase() === sourceString.toLowerCase();
-}
+};
+checkStringIsPalindrome('');
 
-function extractIntegerFromString(sourceValue){
+const extractIntegerFromString = (sourceValue) => {
   const srcString = `${sourceValue ?? ''}`;
   const integerCharsString = srcString.replace(/[^0-9]/g, '');
   if (integerCharsString.length === 0) {
     return NaN;
   }
   return parseFloat(integerCharsString);
-}
+};
+extractIntegerFromString('');
 
-function stringWithBeginningCharacters(sourceString, needLength, characters){
+const stringWithBeginningCharacters = (sourceString, needLength, characters) => {
   sourceString = sourceString ?? '';
   characters = characters ?? '';
 
   const needPrefixlength = (needLength ?? 0) - sourceString.length;
 
-  if (needPrefixlength <= 0 || characters.length === 0){
+  if (needPrefixlength <= 0 || characters.length === 0) {
     return sourceString;
   }
 
@@ -39,4 +40,5 @@ function stringWithBeginningCharacters(sourceString, needLength, characters){
   const piece = characters.substring(0, pieceLength);
 
   return piece + prefix + sourceString;
-}
+};
+stringWithBeginningCharacters('', 0, '');

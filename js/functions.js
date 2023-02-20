@@ -18,7 +18,7 @@ const extractIntegerFromString = (sourceValue = '') => {
 };
 extractIntegerFromString('');
 
-const stringWithBeginningCharacters = (sourceString = '', needLength = 0, characters = '') => {
+const getStringWithBeginningCharacters = (sourceString = '', needLength = 0, characters = '') => {
   const needPrefixlength = needLength - sourceString.length;
 
   if (needPrefixlength <= 0 || characters.length === 0) {
@@ -37,4 +37,4 @@ const stringWithBeginningCharacters = (sourceString = '', needLength = 0, charac
 
   return piece + prefix + sourceString;
 };
-stringWithBeginningCharacters('', 0, '');
+getStringWithBeginningCharacters('', 0, '');

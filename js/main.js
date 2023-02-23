@@ -6,4 +6,16 @@ const messageExamples = ['Всё отлично!',
   'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'];
 
 //функция рандома в указанном диапазоне
-let getRandomArbitrary = (min, max) => Math.random() * (max - min) + min;
+const getRandomArbitrary = (min, max) => Math.random() * (max - min) + min;
+
+const getRandomInteger = (min, max) => Math.round(getRandomArbitrary(min, max));
+
+const getNewPhoto = () => {
+  return {
+    id: '',
+    url: '',
+    description: '',
+    likes: '',
+    comments: ''
+  }
+}

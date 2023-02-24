@@ -16,7 +16,6 @@ const getRandomInteger = (min, max) => {
 
 const getNextId = () => {
   let privateId = 1;
-
   return () => privateId++;
 };
 
@@ -42,14 +41,17 @@ const createPhotoId = getNextId();
 
 const getNewPhoto = () => {
   const thisId = createPhotoId();
+  const comments = [];
+  for (let i = 1; i <= getRandomInteger(1,5); i++){
+    comments.push(getNewComment());
+  }
+
   return{
     id: thisId,
     url: `photos/${thisId}.jpg`,
     description: `Фото ${thisId}`,
     likes: getRandomInteger(15,200),
-    comments:[
-      getNewComment()
-    ]
+    comments: comments
   };
 };
 
@@ -61,3 +63,4 @@ const getPhotosArray = (count = 25) =>{
   }
   return result;
 };
+

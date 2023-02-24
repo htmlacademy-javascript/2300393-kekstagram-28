@@ -17,9 +17,7 @@ const getRandomInteger = (min, max) => {
 const getNextId = () => {
   let privateId = 1;
 
-  return function () {
-    return privateId++;
-  };
+  return () => privateId++;
 };
 
 const createCommentId = getNextId();
@@ -55,6 +53,7 @@ const getNewPhoto = () => {
   };
 };
 
+// eslint-disable-next-line no-unused-vars
 const getPhotosArray = (count = 25) =>{
   const result = [];
   for (let i = 0; i < count; i++){
@@ -62,5 +61,3 @@ const getPhotosArray = (count = 25) =>{
   }
   return result;
 };
-
-getPhotosArray();

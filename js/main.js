@@ -15,14 +15,14 @@ const getRandomInteger = (min, max) => {
 };
 
 const getNextId = () => {
-  let privateId = 0;
+  let privateId = 1;
 
   return function () {
     return privateId++;
   };
 };
 
-const createId = getNextId();
+const createCommentId = getNextId();
 
 const generateRandomNickname = () => {
   const needLength = getRandomInteger(5,10);
@@ -33,13 +33,34 @@ const generateRandomNickname = () => {
   return nick;
 };
 
-const getNewPhoto = () => ({
-  id: createId(),
+const getNewComment = () => ({
+  id: createCommentId(),
   avatar: `img/avatar-${getRandomInteger(1,6)}.svg`,
   message: messageExamples[getRandomInteger(0,messageExamples.length - 1)],
   name: generateRandomNickname()
 });
 
+const createPhotoId = getNextId();
 
-//console.log(getNewPhoto())
-//console.log(getNewPhoto())
+const getNewPhoto = () => {
+  const thisId = createPhotoId();
+  return{
+    id: thisId,
+    url: `photos/${thisId}.jpg`,
+    description: `Фото ${thisId}`,
+    likes: getRandomInteger(15,200),
+    comments:[
+      getNewComment()
+    ]
+  };
+};
+
+const getPhotosArray = (count = 25) =>{
+  const result = [];
+  for (let i = 0; i < count; i++){
+    result.push(getNewPhoto());
+  }
+  return result;
+};
+
+getPhotosArray();

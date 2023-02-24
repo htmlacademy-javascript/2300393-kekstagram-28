@@ -6,16 +6,40 @@ const messageExamples = ['Всё отлично!',
   'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'];
 
 //функция рандома в указанном диапазоне
-const getRandomArbitrary = (min, max) => Math.random() * (max - min) + min;
+const getRandomInteger = (min, max) => {
+  const lower = Math.ceil(Math.min(Math.abs(min), Math.abs(max)));
+  const upper = Math.floor(Math.max(Math.abs(min), Math.abs(max)));
+  const result = Math.random() * (upper - lower + 1) + lower;
 
-const getRandomInteger = (min, max) => Math.round(getRandomArbitrary(min, max));
+  return Math.floor(result);
+};
 
-const getNewPhoto = () => {
-  return {
-    id: '',
-    url: '',
-    description: '',
-    likes: '',
-    comments: ''
+const getNextId = () => {
+  let privateId = 0;
+
+  return function () {
+    return privateId++;
+  };
+};
+
+const createId = getNextId();
+
+const generateRandomNickname = () => {
+  const needLength = getRandomInteger(5,10);
+  let nick = '';
+  for (let i = 0; i < needLength; i++) {
+    nick += String.fromCharCode(getRandomInteger(1040,1103));
   }
-}
+  return nick;
+};
+
+const getNewPhoto = () => ({
+  id: createId(),
+  avatar: `img/avatar-${getRandomInteger(1,6)}.svg`,
+  message: messageExamples[getRandomInteger(0,messageExamples.length - 1)],
+  name: generateRandomNickname()
+});
+
+
+//console.log(getNewPhoto())
+//console.log(getNewPhoto())

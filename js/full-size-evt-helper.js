@@ -3,7 +3,8 @@ const bigPictureContainer = document.querySelector('.big-picture');
 const bigPictureImg = document.querySelector('.big-picture__img img');
 const socialCaption = document.querySelector('.social__caption');
 const socialCommentCount = document.querySelector('.social__comment-count');
-//const commentsLoader = document.querySelector('.comments-loader');
+const commentsContainer = document.querySelector('.social__comments');
+const loadButton = document.querySelector('.social__comments-loader');
 
 let commentsSet = [];
 
@@ -17,6 +18,7 @@ const pushCommentsToVisible = (photoId, needCount = 5) => {
       targetSet.hideComments.splice(0, 1);
     }
   }
+  return targetSet;
 };
 
 const initCommentsSet = (photos) => {
@@ -49,22 +51,27 @@ const getCommentCloneWithData = (comment) => {
   return commentClone;
 };
 
-const initComments = (commentSet) => {
-  const commentsContainer = document.querySelector('.social__comments');
-  commentsContainer.innerHTML = '';
-  commentSet.visibleComments.forEach((comment) => {
+const setLoadButtonVisibleByHideComments = () => {
+  const targetSet = commentsSet.find((e) => e.idPhoto.toString() === bigPictureImg.id.toString());
+  if (targetSet.hideComments.length > 0) {
+    loadButton.classList.remove('hidden');
+  } else {
+    loadButton.classList.add('hidden');
+  }
+};
+
+const pushCommentsToContainer = (commentSet) => {
+  commentSet.forEach((comment) => {
     const commentClone = getCommentCloneWithData(comment);
     commentsContainer.appendChild(commentClone);
   });
 };
 
-const initialSocialCounters = (pictureContainer, targetCommentsSet) => {
-  const likesCount = document.querySelector('.likes-count');
+const initialCommentCounters = (targetCommentsSet) => {
   const commentsCount = document.querySelector('.comments-count');
   socialCommentCount.textContent = targetCommentsSet.visibleComments.length;
-  commentsCount.textContent = ` из ${pictureContainer.querySelector('.picture__comments').textContent} комментариев`;
+  commentsCount.textContent = ` из ${targetCommentsSet.visibleComments.length + targetCommentsSet.hideComments.length} комментариев`;
   socialCommentCount.appendChild(commentsCount);
-  likesCount.textContent = pictureContainer.querySelector('.picture__likes').textContent;
 };
 
 const setHiddenToBigPicture = () => {
@@ -74,24 +81,30 @@ const setHiddenToBigPicture = () => {
 
 const setPictureClickEvt = (photos) => {
   picturesBlock.addEventListener('click', (evt) => {
-    const pictureImg = evt.target;
     if (!evt.target.classList.contains('picture__img')) {
       return;
     }
     bigPictureContainer.classList.remove('hidden');
     document.body.classList.add('modal-open');
 
-    //socialCommentCount.classList.add('hidden');
-    //commentsLoader.classList.add('hidden');
-
+    const pictureImg = evt.target;
     bigPictureImg.src = pictureImg.src;
-
     const pictureContainer = pictureImg.parentElement;
+
     const photoData = photos.find((e) => e.id.toString() === evt.target.id.toString());
+    bigPictureImg.alt = photoData.description;
+    bigPictureImg.id = photoData.id;
     socialCaption.textContent = photoData.description;
     const targetCommentsSet = commentsSet.find((e) => e.idPhoto.toString() === evt.target.id.toString());
-    initComments(targetCommentsSet);
-    initialSocialCounters(pictureContainer, targetCommentsSet);
+
+    commentsContainer.innerHTML = '';
+    pushCommentsToContainer(targetCommentsSet.visibleComments);
+
+    const likesCount = document.querySelector('.likes-count');
+    likesCount.textContent = pictureContainer.querySelector('.picture__likes').textContent;
+
+    initialCommentCounters(targetCommentsSet);
+    setLoadButtonVisibleByHideComments();
   });
 };
 
@@ -111,11 +124,22 @@ const setCloseButtonEvt = () => {
   });
 };
 
+const setCommentsLoaderEvt = () => {
+  loadButton.addEventListener('click', () => {
+    const targetSet = pushCommentsToVisible(bigPictureImg.id);
+
+    initialCommentCounters(targetSet);
+    pushCommentsToContainer(targetSet.lastCommentsPack);
+    setLoadButtonVisibleByHideComments();
+  });
+};
+
 const setFullSizeEventListeners = (photos) => {
   initCommentsSet(photos);
   setPictureClickEvt(photos);
   setCloseButtonEvt();
   setEscEvt();
+  setCommentsLoaderEvt();
 };
 
 export { setFullSizeEventListeners };

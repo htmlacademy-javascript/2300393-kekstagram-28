@@ -12,10 +12,10 @@ const pushCommentsToVisible = (photoId, needCount = 5) => {
   const targetSet = commentsSet.find((e) => e.idPhoto.toString() === photoId.toString());
   targetSet.lastCommentsPack = [];
   for (let i = 0; i < needCount; i++) {
-    if (targetSet.hideComments[0] !== undefined) {
-      targetSet.visibleComments.push(targetSet.hideComments[0]);
-      targetSet.lastCommentsPack.push(targetSet.hideComments[0]);
-      targetSet.hideComments.splice(0, 1);
+    if (targetSet.hiddenComments[0] !== undefined) {
+      targetSet.visibleComments.push(targetSet.hiddenComments[0]);
+      targetSet.lastCommentsPack.push(targetSet.hiddenComments[0]);
+      targetSet.hiddenComments.splice(0, 1);
     }
   }
   return targetSet;
@@ -27,7 +27,7 @@ const initCommentsSet = (photos) => {
     const comments = {
       idPhoto: photo.id,
       visibleComments: [],
-      hideComments: photo.comments,
+      hiddenComments: photo.comments,
       lastCommentsPack: []
     };
     commentsSet.push(comments);
@@ -51,9 +51,9 @@ const getCommentCloneWithData = (comment) => {
   return commentClone;
 };
 
-const setLoadButtonVisibleByHideComments = () => {
+const setLoadButtonVisibleByHiddenComments = () => {
   const targetSet = commentsSet.find((e) => e.idPhoto.toString() === bigPictureImg.id.toString());
-  if (targetSet.hideComments.length > 0) {
+  if (targetSet.hiddenComments.length > 0) {
     loadButton.classList.remove('hidden');
   } else {
     loadButton.classList.add('hidden');
@@ -70,7 +70,7 @@ const pushCommentsToContainer = (commentSet) => {
 const initialCommentCounters = (targetCommentsSet) => {
   const commentsCount = document.querySelector('.comments-count');
   socialCommentCount.textContent = targetCommentsSet.visibleComments.length;
-  commentsCount.textContent = ` из ${targetCommentsSet.visibleComments.length + targetCommentsSet.hideComments.length} комментариев`;
+  commentsCount.textContent = ` из ${targetCommentsSet.visibleComments.length + targetCommentsSet.hiddenComments.length} комментариев`;
   socialCommentCount.appendChild(commentsCount);
 };
 
@@ -104,7 +104,7 @@ const setPictureClickEvt = (photos) => {
     likesCount.textContent = pictureContainer.querySelector('.picture__likes').textContent;
 
     initialCommentCounters(targetCommentsSet);
-    setLoadButtonVisibleByHideComments();
+    setLoadButtonVisibleByHiddenComments();
   });
 };
 
@@ -130,7 +130,7 @@ const setCommentsLoaderEvt = () => {
 
     initialCommentCounters(targetSet);
     pushCommentsToContainer(targetSet.lastCommentsPack);
-    setLoadButtonVisibleByHideComments();
+    setLoadButtonVisibleByHiddenComments();
   });
 };
 

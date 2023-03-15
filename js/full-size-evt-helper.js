@@ -2,8 +2,33 @@ const picturesBlock = document.querySelector('.pictures');
 const bigPictureContainer = document.querySelector('.big-picture');
 const bigPictureImg = document.querySelector('.big-picture__img img');
 const socialCaption = document.querySelector('.social__caption');
-const socialCommentCount = document.querySelector('.social__comment-count');
-const commentsLoader = document.querySelector('.comments-loader');
+//const socialCommentCount = document.querySelector('.social__comment-count');
+//const commentsLoader = document.querySelector('.comments-loader');
+
+let commentsSet = [];
+
+const pushCommentsToVisible = (photoId, needCount = 5) => {
+  const targetSet = commentsSet.find((e) => e.idPhoto.toString() === photoId.toString());
+  for (let i = 0; i < needCount; i++) {
+    if (targetSet.hideComments[0] !== undefined) {
+      targetSet.visibleComments.push(targetSet.hideComments[0]);
+      targetSet.hideComments.splice(0, 1);
+    }
+  }
+};
+
+const initCommentsSet = (photos) => {
+  commentsSet = [];
+  photos.forEach((photo) => {
+    const comments = {
+      idPhoto: photo.id,
+      visibleComments: [],
+      hideComments: photo.comments
+    };
+    commentsSet.push(comments);
+    pushCommentsToVisible(photo.id);
+  });
+};
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
@@ -51,8 +76,8 @@ const setPictureClickEvt = (photos) => {
     bigPictureContainer.classList.remove('hidden');
     document.body.classList.add('modal-open');
 
-    socialCommentCount.classList.add('hidden');
-    commentsLoader.classList.add('hidden');
+    //socialCommentCount.classList.add('hidden');
+    //commentsLoader.classList.add('hidden');
 
     bigPictureImg.src = pictureImg.src;
 
@@ -64,7 +89,7 @@ const setPictureClickEvt = (photos) => {
   });
 };
 
-const setEscEvt = () =>{
+const setEscEvt = () => {
   document.addEventListener('keydown', (evt) => {
     if (isEscapeKey(evt)) {
       evt.preventDefault();
@@ -73,7 +98,7 @@ const setEscEvt = () =>{
   });
 };
 
-const setCloseButtonEvt = () =>{
+const setCloseButtonEvt = () => {
   const closeButton = document.querySelector('.big-picture__cancel');
   closeButton.addEventListener('click', () => {
     setHiddenToBigPicture();
@@ -81,6 +106,7 @@ const setCloseButtonEvt = () =>{
 };
 
 const setFullSizeEventListeners = (photos) => {
+  initCommentsSet(photos);
   setPictureClickEvt(photos);
   setCloseButtonEvt();
   setEscEvt();

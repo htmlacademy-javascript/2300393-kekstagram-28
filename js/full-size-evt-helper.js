@@ -74,9 +74,22 @@ const initialCommentCounters = (targetCommentsSet) => {
   socialCommentCount.appendChild(commentsCount);
 };
 
+const hideActiveCommentSet = () =>{
+  const targetSet = commentsSet.find((e) => e.idPhoto.toString() === bigPictureImg.id.toString());
+  targetSet.lastCommentsPack = [];
+  targetSet.hiddenComments.unshift(...targetSet.visibleComments);
+  targetSet.visibleComments = [];
+};
+
+const resetTargetCommentSetVisible = () =>{
+  hideActiveCommentSet();
+  pushCommentsToVisible(bigPictureImg.id);
+};
+
 const setHiddenToBigPicture = () => {
   bigPictureContainer.classList.add('hidden');
   document.body.classList.remove('modal-open');
+  resetTargetCommentSetVisible();
 };
 
 const setPictureClickEvt = (photos) => {

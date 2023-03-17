@@ -31,7 +31,7 @@ const createPhotoId = getNextId();
 const getNewMockPhoto = () => {
   const thisId = createPhotoId();
   const comments = [];
-  for (let i = 1; i <= getRandomInteger(1,5); i++){
+  for (let i = 1; i <= getRandomInteger(17,40); i++){
     comments.push(getNewRandomComment());
   }
 

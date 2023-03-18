@@ -123,9 +123,10 @@ const setPictureClickEvt = (photos) => {
 
 const setEscEvt = () => {
   document.addEventListener('keydown', (evt) => {
-    if (isEscapeKey(evt) && !bigPictureContainer.classList.contains('hidden')) {
+    if (isEscapeKey(evt)) {
       evt.preventDefault();
       setHiddenToBigPicture();
+      evt.stopPropagation();
     }
   });
 };

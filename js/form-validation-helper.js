@@ -28,9 +28,10 @@ const setValidationEventListeners = () => {
   });
 
   document.addEventListener('keydown', (evt) => {
-    if (isEscapeKey(evt) && !uploadOverlay.classList.contains('hidden')) {
+    if (isEscapeKey(evt)) {
       evt.preventDefault();
       closeValidationForm();
+      evt.stopPropagation();
     }
   });
 };

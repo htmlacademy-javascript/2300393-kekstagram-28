@@ -123,7 +123,7 @@ const setPictureClickEvt = (photos) => {
 
 const setEscEvt = () => {
   document.addEventListener('keydown', (evt) => {
-    if (isEscapeKey(evt)) {
+    if (isEscapeKey(evt) && !bigPictureContainer.classList.contains('hidden')) {
       evt.preventDefault();
       setHiddenToBigPicture();
     }
@@ -155,4 +155,4 @@ const setFullSizeEventListeners = (photos) => {
   setCommentsLoaderEvt();
 };
 
-export { setFullSizeEventListeners };
+export { setFullSizeEventListeners, isEscapeKey };

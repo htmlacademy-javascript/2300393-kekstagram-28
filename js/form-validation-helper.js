@@ -5,20 +5,29 @@ const uploadOverlay = document.querySelector('.img-upload__overlay');
 const imgUploadCancel = document.querySelector('.img-upload__cancel');
 const form = document.querySelector('.img-upload__form');
 const hashtagInput = document.querySelector('.text__hashtags');
+const commentInput = document.querySelector('.text__description');
 
 const pristine = new Pristine(form,
   {
-    classTo: 'img-upload__form',
+    classTo: 'img-upload__field-wrapper',
+    errorTextParent: 'img-upload__field-wrapper',
     //errorClass: 'form__item--invalid',
     //successClass: 'form__item--valid',
-    errorTextParent: 'img-upload__field-wrapper',
     errorTextTag: 'div',
     errorTextClass: 'form__error'
-    //pristine-error form__error
   });
 
+const validateComment = (thisComment) => {
+  if (!thisComment) {
+    return true;
+  }
+  if (thisComment.length > 140) {
+    return false;
+  }
+  return true;
+};
 const validateHashtag = (thisTags) => {
-  if (!thisTags || /\s+/.test()) {
+  if (!thisTags /*|| /\s+/.test(thisTags)*/) {
     return true;
   }
   const tagRegex = /^#[а-яёa-z0-9]{1,20}$/i;
@@ -41,19 +50,15 @@ const validateHashtag = (thisTags) => {
   return true;
 };
 
-const getHashtagErrorMessage = () => 'Хештеги не удовлетворяют правилам!';
-
-
-pristine.addValidator(hashtagInput, validateHashtag, getHashtagErrorMessage);
+pristine.addValidator(hashtagInput, validateHashtag, 'Хештеги не удовлетворяют правилам!');
+pristine.addValidator(commentInput, validateComment, 'Комментарий не удовлетворяет правилам!');
 
 form.addEventListener('submit', (evt) => {
   evt.preventDefault();
-  if (!pristine.validate(hashtagInput)) {
-    console.log('неа');
+  if (!pristine.validate(hashtagInput) || !pristine.validate(commentInput)) {
+    return;
   }
-  else{
-    console.log('угу');
-  }
+
 });
 
 const closeValidationForm = () => {

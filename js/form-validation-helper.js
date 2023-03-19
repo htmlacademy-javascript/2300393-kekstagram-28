@@ -27,7 +27,7 @@ const validateComment = (thisComment) => {
   return true;
 };
 const validateHashtag = (thisTags) => {
-  if (!thisTags /*|| /\s+/.test(thisTags)*/) {
+  if (!thisTags) {
     return true;
   }
   const tagRegex = /^#[а-яёa-z0-9]{1,20}$/i;
@@ -37,7 +37,6 @@ const validateHashtag = (thisTags) => {
     return false;
   }
   for (const tag of tags) {
-
     if (!tagRegex.test(tag)) {
       return false;
     }
@@ -61,9 +60,7 @@ form.addEventListener('submit', (evt) => {
 
 });
 
-const closeValidationForm = () => {
-  uploadOverlay.classList.add('hidden');
-  document.body.classList.remove('modal-open');
+const returnDefaultValues = () =>{
   uploadFileControl.value = null;
   document.querySelector('.scale__control--value').value = '55%';
   document.querySelector('.effect-level__value').value = '';
@@ -71,6 +68,12 @@ const closeValidationForm = () => {
     e.value = 'none';
   });
   hashtagInput.value = '';
+};
+
+const closeValidationForm = () => {
+  uploadOverlay.classList.add('hidden');
+  document.body.classList.remove('modal-open');
+  returnDefaultValues();
 };
 
 const setValidationEventListeners = () => {

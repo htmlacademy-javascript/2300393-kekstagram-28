@@ -54,9 +54,9 @@ pristine.addValidator(hashtagInput, validateHashtag, 'Хештеги не удо
 pristine.addValidator(commentInput, validateComment, 'Комментарий не удовлетворяет правилам!');
 
 form.addEventListener('submit', (evt) => {
-  evt.preventDefault();
+
   if (!pristine.validate(hashtagInput) || !pristine.validate(commentInput)) {
-    return;
+    evt.preventDefault();
   }
 
 });

@@ -6,7 +6,16 @@ const imgUploadCancel = document.querySelector('.img-upload__cancel');
 const form = document.querySelector('.img-upload__form');
 const hashtagInput = document.querySelector('.text__hashtags');
 
-const pristine = new Pristine(form);
+const pristine = new Pristine(form,
+  {
+    classTo: 'img-upload__form',
+    //errorClass: 'form__item--invalid',
+    //successClass: 'form__item--valid',
+    errorTextParent: 'img-upload__field-wrapper',
+    errorTextTag: 'div',
+    errorTextClass: 'form__error'
+    //pristine-error form__error
+  });
 
 const validateHashtag = (thisTags) => {
   if (!thisTags || /\s+/.test()) {

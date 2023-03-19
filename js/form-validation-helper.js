@@ -75,7 +75,6 @@ const closeValidationForm = () => {
 
 const setValidationEventListeners = () => {
   uploadFileControl.addEventListener('change', (/*evt*/) => {
-    //console.log(evt)
     uploadOverlay.classList.remove('hidden');
     document.body.classList.add('modal-open');
   });
@@ -85,7 +84,11 @@ const setValidationEventListeners = () => {
   });
 
   document.addEventListener('keydown', (evt) => {
-    if (isEscapeKey(evt)) {
+
+    if (isEscapeKey(evt) &&
+      !uploadOverlay.classList.contains('hidden') &&
+      !['text__description', 'text__hashtags'].some((e) => evt.target.classList.contains(e))
+    ) {
       evt.preventDefault();
       closeValidationForm();
       evt.stopPropagation();

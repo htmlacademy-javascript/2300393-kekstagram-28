@@ -6,6 +6,7 @@ const imgUploadCancel = document.querySelector('.img-upload__cancel');
 const form = document.querySelector('.img-upload__form');
 const hashtagInput = document.querySelector('.text__hashtags');
 const commentInput = document.querySelector('.text__description');
+const MAX_COMMENT_LENGTH = 140;
 
 const pristine = new Pristine(form,
   {
@@ -21,7 +22,7 @@ const validateComment = (thisComment) => {
   if (!thisComment) {
     return true;
   }
-  if (thisComment.length > 140) {
+  if (thisComment.length > MAX_COMMENT_LENGTH) {
     return false;
   }
   return true;
@@ -30,7 +31,7 @@ const validateHashtag = (thisTags) => {
   if (!thisTags) {
     return true;
   }
-  const tagRegex = /^#[а-яёa-z0-9]{1,20}$/i;
+  const tagRegex = /^#[а-яёa-z0-9]{1,19}$/i;
   const existTags = [];
   const tags = thisTags.split(/\s+/);
   if (tags.length > 5) {
@@ -87,10 +88,9 @@ const setValidationEventListeners = () => {
   });
 
   document.addEventListener('keydown', (evt) => {
-
     if (isEscapeKey(evt) &&
       !uploadOverlay.classList.contains('hidden') &&
-      !['text__description', 'text__hashtags'].some((e) => evt.target.classList.contains(e))
+      document.activeElement === document.body
     ) {
       evt.preventDefault();
       closeValidationForm();

@@ -52,7 +52,7 @@ const getCommentCloneWithData = (comment) => {
 };
 
 const setLoadButtonVisibleByHiddenComments = () => {
-  const targetSet = commentsSet.find((e) => e.idPhoto.toString() === bigPictureImg.id.toString());
+  const targetSet = commentsSet.find((e) => e.idPhoto.toString() === bigPictureImg.dataset.id.toString());
   if (targetSet.hiddenComments.length > 0) {
     loadButton.classList.remove('hidden');
   } else {
@@ -75,7 +75,7 @@ const initialCommentCounters = (targetCommentsSet) => {
 };
 
 const hideActiveCommentSet = () =>{
-  const targetSet = commentsSet.find((e) => e.idPhoto.toString() === bigPictureImg.id.toString());
+  const targetSet = commentsSet.find((e) => e.idPhoto.toString() === bigPictureImg.dataset.id.toString());
   targetSet.lastCommentsPack = [];
   targetSet.hiddenComments.unshift(...targetSet.visibleComments);
   targetSet.visibleComments = [];
@@ -83,7 +83,7 @@ const hideActiveCommentSet = () =>{
 
 const resetTargetCommentSetVisible = () =>{
   hideActiveCommentSet();
-  pushCommentsToVisible(bigPictureImg.id);
+  pushCommentsToVisible(bigPictureImg.dataset.id);
 };
 
 const setHiddenToBigPicture = () => {
@@ -104,11 +104,11 @@ const setPictureClickEvt = (photos) => {
     bigPictureImg.src = pictureImg.src;
     const pictureContainer = pictureImg.parentElement;
 
-    const photoData = photos.find((e) => e.id.toString() === evt.target.id.toString());
+    const photoData = photos.find((e) => e.id.toString() === evt.target.dataset.id.toString());
     bigPictureImg.alt = photoData.description;
-    bigPictureImg.id = photoData.id;
+    bigPictureImg.dataset.id = photoData.id;
     socialCaption.textContent = photoData.description;
-    const targetCommentsSet = commentsSet.find((e) => e.idPhoto.toString() === evt.target.id.toString());
+    const targetCommentsSet = commentsSet.find((e) => e.idPhoto.toString() === evt.target.dataset.id.toString());
 
     commentsContainer.innerHTML = '';
     pushCommentsToContainer(targetCommentsSet.visibleComments);
@@ -123,9 +123,10 @@ const setPictureClickEvt = (photos) => {
 
 const setEscEvt = () => {
   document.addEventListener('keydown', (evt) => {
-    if (isEscapeKey(evt)) {
+    if (isEscapeKey(evt) && !bigPictureContainer.classList.contains('hidden')) {
       evt.preventDefault();
       setHiddenToBigPicture();
+      evt.stopPropagation();
     }
   });
 };
@@ -139,7 +140,7 @@ const setCloseButtonEvt = () => {
 
 const setCommentsLoaderEvt = () => {
   loadButton.addEventListener('click', () => {
-    const targetSet = pushCommentsToVisible(bigPictureImg.id);
+    const targetSet = pushCommentsToVisible(bigPictureImg.dataset.id);
 
     initialCommentCounters(targetSet);
     pushCommentsToContainer(targetSet.lastCommentsPack);
@@ -155,4 +156,4 @@ const setFullSizeEventListeners = (photos) => {
   setCommentsLoaderEvt();
 };
 
-export { setFullSizeEventListeners };
+export { setFullSizeEventListeners, isEscapeKey };

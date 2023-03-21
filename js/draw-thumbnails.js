@@ -3,7 +3,7 @@ import {getMockPhotosArray} from './mock-data.js';
 const setPhotoData = (templateClone, photo) => {
   const img = templateClone.querySelector('.picture__img');
   img.src = photo.url;
-  img.id = photo.id;
+  img.dataset.id = photo.id;
   const likesCounter = templateClone.querySelector('.picture__likes');
   likesCounter.textContent = photo.likes;
 

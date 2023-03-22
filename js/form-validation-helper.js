@@ -1,5 +1,6 @@
 import { isEscapeKey } from './full-size-evt-helper.js';
-
+import { setImgScale } from './img-scale-evt-helper.js';
+import { hideSlider, setVisibleImageStyle } from './nouislider-evt-helper.js';
 const uploadFileControl = document.querySelector('#upload-file');
 const uploadOverlay = document.querySelector('.img-upload__overlay');
 const imgUploadCancel = document.querySelector('.img-upload__cancel');
@@ -12,8 +13,6 @@ const pristine = new Pristine(form,
   {
     classTo: 'img-upload__field-wrapper',
     errorTextParent: 'img-upload__field-wrapper',
-    //errorClass: 'form__item--invalid',
-    //successClass: 'form__item--valid',
     errorTextTag: 'div',
     errorTextClass: 'form__error'
   });
@@ -61,14 +60,13 @@ form.addEventListener('submit', (evt) => {
 
 });
 
-const returnDefaultValues = () =>{
+const returnDefaultValues = () => {
   uploadFileControl.value = null;
   document.querySelector('.scale__control--value').value = '55%';
   document.querySelector('.effect-level__value').value = '';
-  document.querySelectorAll('.effects__radio').forEach((e) => {
-    e.value = 'none';
-  });
+  document.querySelector('.img-upload__effects').value = '';
   hashtagInput.value = '';
+  commentInput.value = '';
 };
 
 const closeValidationForm = () => {
@@ -79,6 +77,9 @@ const closeValidationForm = () => {
 
 const setValidationEventListeners = () => {
   uploadFileControl.addEventListener('change', (/*evt*/) => {
+    setImgScale();
+    hideSlider();
+    setVisibleImageStyle();
     uploadOverlay.classList.remove('hidden');
     document.body.classList.add('modal-open');
   });

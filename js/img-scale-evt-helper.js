@@ -40,4 +40,4 @@ const setImgScaleEventListeners = () => {
   smallerEvt();
 };
 
-export { setImgScaleEventListeners };
+export {setImgScale, setImgScaleEventListeners };

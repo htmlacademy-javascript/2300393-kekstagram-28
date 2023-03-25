@@ -29,9 +29,16 @@ const load = (route, errorText, method = Method.GET, body = null) =>
       throw new Error(errorText);
     });
 
-const getData = () => load(Route.GET_DATA, ErrorText.GET_DATA);
+const showError = (error) => {
+  const errorsDiv = document.querySelector('.errors');
+  const errorsContainer = document.querySelector('.errors-container');
+  errorsContainer.classList.remove('hidden');
+  errorsDiv.textContent += error;
+};
 
-const sendData = (body) => load(Route.SEND_DATA, ErrorText.SEND_DATA, Method.POST, body);
+const getData = () => load(Route.GET_DATA, ErrorText.GET_DATA).catch((e) => showError(e));
+
+const sendData = (body) => load(Route.SEND_DATA, ErrorText.SEND_DATA, Method.POST, body).catch((e) => showError(e));
 
 const fetchPhotos = () => {
 
@@ -39,12 +46,8 @@ const fetchPhotos = () => {
     drawThumbnails(photos);
     setFullSizeEventListeners(photos);
   }).catch((error) => {
-    const errorsDiv = document.querySelector('.errors');
-    const errorsContainer = document.querySelector('.errors-container');
-    errorsContainer.classList.remove('hidden');
-    errorsDiv.textContent += error;
+    throw new Error(error);
   });
-
 };
 
 export { getData, sendData, fetchPhotos };

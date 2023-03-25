@@ -50,7 +50,7 @@ const validateHashtag = (thisTags) => {
 };
 
 const returnDefaultValues = () => {
-  uploadFileControl.value = null;
+  uploadFileControl.value = '';
   document.querySelector('.scale__control--value').value = '55%';
   document.querySelector('.effect-level__value').value = '';
   document.querySelector('.img-upload__effects').value = '';
@@ -66,22 +66,44 @@ const closeValidationForm = () => {
 
 pristine.addValidator(hashtagInput, validateHashtag, 'Хештеги не удовлетворяют правилам!');
 pristine.addValidator(commentInput, validateComment, 'Комментарий не удовлетворяет правилам!');
+
+const getOkSendTemplateClone = () => {
+  const successTemplate = document.querySelector('#success').content;
+  return successTemplate.cloneNode(true);
+};
+
+const getSuccessMessage = () => document.querySelector('.success');
+
+const initSubmitMessage = () => {
+  const sendTemplate = getOkSendTemplateClone();
+  document.querySelector('body').appendChild(sendTemplate);
+
+  const successMessage = getSuccessMessage();
+  successMessage.classList.add('hidden');
+
+  successMessage.querySelector('.success__button').addEventListener('click', () => {
+    successMessage.classList.add('hidden');
+  });
+};
+
 const setSubmitListener = (submit) => (
   form.addEventListener('submit', (evt) => {
     evt.preventDefault();
     if (!pristine.validate(hashtagInput) || !pristine.validate(commentInput)) {
       return;
     }
-    submit(new FormData(evt.target)).then(
-      closeValidationForm()
-    //TODO: показывать ответ..
+    submit(new FormData(evt.target)).then(() => {
+      closeValidationForm();
+      getSuccessMessage().classList.remove('hidden');
+    }
     );
   })
 );
 
 const setValidationEventListeners = (submit) => {
+  initSubmitMessage();
+  setSubmitListener(submit);
   uploadFileControl.addEventListener('change', (/*evt*/) => {
-    setSubmitListener(submit);
     setImgScale();
     hideSlider();
     setVisibleImageStyle();

@@ -17,7 +17,8 @@ const ErrorText = {
 };
 
 const load = (route, errorText, method = Method.GET, body = null) =>
-  fetch(Route.GET_DATA, { method, body })
+  fetch(method === Method.GET ? Route.GET_DATA : Route.SEND_DATA,
+    { method, body })
     .then((response) => {
       if (!response.ok) {
         throw new Error(errorText);

@@ -9,6 +9,6 @@ import {sendData, fetchPhotos } from './fetch-helper.js';
 fetchPhotos();
 //drawThumbnails(photos);
 //setFullSizeEventListeners(photos);
-setValidationEventListeners();
+setValidationEventListeners(sendData);
 setImgScaleEventListeners();
 setEffectFieldsetEvt();

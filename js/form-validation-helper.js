@@ -49,17 +49,6 @@ const validateHashtag = (thisTags) => {
   return true;
 };
 
-pristine.addValidator(hashtagInput, validateHashtag, 'Хештеги не удовлетворяют правилам!');
-pristine.addValidator(commentInput, validateComment, 'Комментарий не удовлетворяет правилам!');
-
-form.addEventListener('submit', (evt) => {
-
-  if (!pristine.validate(hashtagInput) || !pristine.validate(commentInput)) {
-    evt.preventDefault();
-  }
-
-});
-
 const returnDefaultValues = () => {
   uploadFileControl.value = null;
   document.querySelector('.scale__control--value').value = '55%';
@@ -75,8 +64,24 @@ const closeValidationForm = () => {
   returnDefaultValues();
 };
 
-const setValidationEventListeners = () => {
+pristine.addValidator(hashtagInput, validateHashtag, 'Хештеги не удовлетворяют правилам!');
+pristine.addValidator(commentInput, validateComment, 'Комментарий не удовлетворяет правилам!');
+const setSubmitListener = (submit) => (
+  form.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+    if (!pristine.validate(hashtagInput) || !pristine.validate(commentInput)) {
+      return;
+    }
+    submit(new FormData(evt.target)).then(
+      closeValidationForm()
+    //TODO: показывать ответ..
+    );
+  })
+);
+
+const setValidationEventListeners = (submit) => {
   uploadFileControl.addEventListener('change', (/*evt*/) => {
+    setSubmitListener(submit);
     setImgScale();
     hideSlider();
     setVisibleImageStyle();

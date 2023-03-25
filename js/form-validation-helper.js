@@ -59,9 +59,11 @@ const returnDefaultValues = () => {
 };
 
 const closeValidationForm = () => {
-  uploadOverlay.classList.add('hidden');
-  document.body.classList.remove('modal-open');
-  returnDefaultValues();
+  if (!uploadOverlay.classList.contains('hidden')) {
+    uploadOverlay.classList.add('hidden');
+    document.body.classList.remove('modal-open');
+    returnDefaultValues();
+  }
 };
 
 pristine.addValidator(hashtagInput, validateHashtag, 'Хештеги не удовлетворяют правилам!');
@@ -74,15 +76,20 @@ const getOkSendTemplateClone = () => {
 
 const getSuccessMessage = () => document.querySelector('.success');
 
+const hideSuccessMessage = () => {
+  getSuccessMessage().classList.add('hidden');
+};
+
+
 const initSubmitMessage = () => {
   const sendTemplate = getOkSendTemplateClone();
   document.querySelector('body').appendChild(sendTemplate);
 
   const successMessage = getSuccessMessage();
-  successMessage.classList.add('hidden');
+  hideSuccessMessage();
 
   successMessage.querySelector('.success__button').addEventListener('click', () => {
-    successMessage.classList.add('hidden');
+    hideSuccessMessage();
   });
 };
 
@@ -95,8 +102,7 @@ const setSubmitListener = (submit) => (
     submit(new FormData(evt.target)).then(() => {
       closeValidationForm();
       getSuccessMessage().classList.remove('hidden');
-    }
-    );
+    });
   })
 );
 
@@ -116,12 +122,11 @@ const setValidationEventListeners = (submit) => {
   });
 
   document.addEventListener('keydown', (evt) => {
-    if (isEscapeKey(evt) &&
-      !uploadOverlay.classList.contains('hidden') &&
-      document.activeElement === document.body
-    ) {
+    if (isEscapeKey(evt) && document.activeElement === document.body) {
       evt.preventDefault();
       closeValidationForm();
+
+      hideSuccessMessage();
       evt.stopPropagation();
     }
   });

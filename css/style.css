@@ -1408,3 +1408,13 @@ main {
 .hidden {
   display: none;
 }
+
+.errors{
+  color: red;
+  background-color: dimgray;
+  border-color: red;
+  border-style: dotted;
+  text-align: center;
+  width: 100vw;
+  padding: 15px;
+}

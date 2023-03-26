@@ -104,7 +104,6 @@ const setSubmitListener = (submit) => (
     submitButton.disabled = true;
     submit(new FormData(evt.target)).then(() => {
       closeValidationForm();
-      getSuccessMessage().classList.remove('hidden');
       submitButton.disabled = false;
     });
   })
@@ -136,4 +135,4 @@ const setValidationEventListeners = (submit) => {
   });
 };
 
-export { setValidationEventListeners };
+export { setValidationEventListeners, getSuccessMessage };

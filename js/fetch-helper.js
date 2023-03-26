@@ -1,6 +1,6 @@
 import { drawThumbnails } from './draw-thumbnails.js';
 import { setFullSizeEventListeners } from './full-size-evt-helper.js';
-
+import { getSuccessMessage } from './form-validation-helper.js';
 const PHOTOS_URL = 'https://28.javascript.pages.academy/kekstagram/data';
 const SEND_URL = 'https://28.javascript.pages.academy/kekstagram';
 const Route = {
@@ -38,7 +38,9 @@ const showError = (error) => {
 
 const getData = () => load(Route.GET_DATA, ErrorText.GET_DATA).catch((e) => showError(e));
 
-const sendData = (body) => load(Route.SEND_DATA, ErrorText.SEND_DATA, Method.POST, body).catch((e) => showError(e));
+const sendData = (body) => load(Route.SEND_DATA, ErrorText.SEND_DATA, Method.POST, body).then(
+  () => getSuccessMessage().classList.remove('hidden')
+).catch((e) => showError(e));
 
 const fetchPhotos = () => {
 

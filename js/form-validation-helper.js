@@ -76,6 +76,8 @@ const getOkSendTemplateClone = () => {
 
 const getSuccessMessage = () => document.querySelector('.success');
 
+const submitButton = () => document.querySelector('#upload-submit');
+
 const hideSuccessMessage = () => {
   getSuccessMessage().classList.add('hidden');
 };
@@ -99,9 +101,11 @@ const setSubmitListener = (submit) => (
     if (!pristine.validate(hashtagInput) || !pristine.validate(commentInput)) {
       return;
     }
+    submitButton.disabled = true;
     submit(new FormData(evt.target)).then(() => {
       closeValidationForm();
       getSuccessMessage().classList.remove('hidden');
+      submitButton.disabled = false;
     });
   })
 );

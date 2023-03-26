@@ -1,5 +1,3 @@
-import {getMockPhotosArray} from './mock-data.js';
-
 const setPhotoData = (templateClone, photo) => {
   const img = templateClone.querySelector('.picture__img');
   img.src = photo.url;
@@ -23,11 +21,9 @@ const getCloneWithPhotoData = (photo) => {
 };
 
 const drawThumbnails = (dataArray) => {
-  const photosArray = dataArray ?? getMockPhotosArray();
-
   const fragment = document.createDocumentFragment();
 
-  for(const photo of photosArray){
+  for(const photo of dataArray){
     fragment.appendChild(getCloneWithPhotoData(photo));
   }
 

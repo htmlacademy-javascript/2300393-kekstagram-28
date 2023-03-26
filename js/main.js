@@ -5,10 +5,7 @@ import { setImgScaleEventListeners } from './img-scale-evt-helper.js';
 import { setEffectFieldsetEvt } from './nouislider-evt-helper.js';
 import {sendData, fetchPhotos } from './fetch-helper.js';
 
-//const photos = getMockPhotosArray();
 fetchPhotos();
-//drawThumbnails(photos);
-//setFullSizeEventListeners(photos);
 setValidationEventListeners(sendData);
 setImgScaleEventListeners();
 setEffectFieldsetEvt();

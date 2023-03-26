@@ -8,6 +8,8 @@ const form = document.querySelector('.img-upload__form');
 const hashtagInput = document.querySelector('.text__hashtags');
 const commentInput = document.querySelector('.text__description');
 const MAX_COMMENT_LENGTH = 140;
+const TAG_REGEX = /^#[а-яёa-z0-9]{1,19}$/i;
+const MAX_TAGS_LENGTH = 5;
 
 const pristine = new Pristine(form,
   {
@@ -30,14 +32,14 @@ const validateHashtag = (thisTags) => {
   if (!thisTags) {
     return true;
   }
-  const tagRegex = /^#[а-яёa-z0-9]{1,19}$/i;
+
   const existTags = [];
   const tags = thisTags.split(/\s+/);
-  if (tags.length > 5) {
+  if (tags.length > MAX_TAGS_LENGTH) {
     return false;
   }
   for (const tag of tags) {
-    if (!tagRegex.test(tag)) {
+    if (!TAG_REGEX.test(tag)) {
       return false;
     }
 
@@ -112,7 +114,7 @@ const setSubmitListener = (submit) => (
 const setValidationEventListeners = (submit) => {
   initSubmitMessage();
   setSubmitListener(submit);
-  uploadFileControl.addEventListener('change', (/*evt*/) => {
+  uploadFileControl.addEventListener('change', () => {
     setImgScale();
     hideSlider();
     setVisibleImageStyle();

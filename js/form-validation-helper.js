@@ -14,7 +14,7 @@ const pristine = new Pristine(form,
     classTo: 'img-upload__field-wrapper',
     errorTextParent: 'img-upload__field-wrapper',
     errorTextTag: 'div',
-    errorTextClass: 'form__error'
+    errorTextClass: 'form__error errors'
   });
 
 const validateComment = (thisComment) => {

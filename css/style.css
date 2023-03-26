@@ -1415,6 +1415,9 @@ main {
   border-color: red;
   border-style: dotted;
   text-align: center;
+}
+
+.full-display-width{
   width: 100vw;
   padding: 15px;
 }

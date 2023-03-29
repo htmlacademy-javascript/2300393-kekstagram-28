@@ -16,6 +16,8 @@ const ErrorText = {
   SEND_DATA: 'Не удалось отправить форму. Попробуйте ещё раз',
 };
 
+const imgFilters = document.querySelector('.img-filters');
+
 const load = (route, errorText, method = Method.GET, body = null) =>
   fetch(method === Method.GET ? Route.GET_DATA : Route.SEND_DATA,
     { method, body })
@@ -23,6 +25,7 @@ const load = (route, errorText, method = Method.GET, body = null) =>
       if (!response.ok) {
         throw new Error(errorText);
       }
+      imgFilters.classList.remove('img-filters--inactive');
       return response.json();
     })
     .catch(() => {
@@ -42,14 +45,16 @@ const sendData = (body) => load(Route.SEND_DATA, ErrorText.SEND_DATA, Method.POS
   () => getSuccessMessage().classList.remove('hidden')
 ).catch((e) => showError(e));
 
-const fetchPhotos = () => {
+const receivedPhotos = getData();
 
-  getData().then((photos) => {
-    drawThumbnails(photos);
-    setFullSizeEventListeners(photos);
+const renderPhotos = (photos) => {
+
+  photos.then((photo) => {
+    drawThumbnails(photo);
+    setFullSizeEventListeners(photo);
   }).catch((error) => {
     throw new Error(error);
   });
 };
 
-export { getData, sendData, fetchPhotos };
+export { sendData, receivedPhotos, renderPhotos };

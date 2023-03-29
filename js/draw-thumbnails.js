@@ -20,7 +20,13 @@ const getCloneWithPhotoData = (photo) => {
   return templateClone;
 };
 
+const clearExistRenders = () =>{
+  const renders = document.querySelectorAll('.pictures .picture');
+  renders.forEach((render)=>render.remove());
+};
+
 const drawThumbnails = (dataArray) => {
+  clearExistRenders();
   const fragment = document.createDocumentFragment();
 
   for(const photo of dataArray){

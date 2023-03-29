@@ -13,7 +13,8 @@ const activateButton = (button) => {
 const changeToButton = (button) => {
   inactivateButtons();
   activateButton(button);
-}
+};
+
 const setFilterButtonsEvt = () => {
   imgFilters.addEventListener('click', (evt) => {
     if (evt.target.classList.contains('img-filters__button')) {

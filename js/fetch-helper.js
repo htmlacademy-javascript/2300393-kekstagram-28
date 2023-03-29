@@ -48,7 +48,6 @@ const sendData = (body) => load(Route.SEND_DATA, ErrorText.SEND_DATA, Method.POS
 const receivedPhotos = getData();
 
 const renderPhotos = (photos) => {
-
   photos.then((photo) => {
     drawThumbnails(photo);
     setFullSizeEventListeners(photo);

@@ -1,3 +1,5 @@
+import { setFullSizeEventListeners } from './full-size-evt-helper.js';
+
 const setPhotoData = (templateClone, photo) => {
   const img = templateClone.querySelector('.picture__img');
   img.src = photo.url;
@@ -37,4 +39,13 @@ const drawThumbnails = (dataArray) => {
   picturesBlock.appendChild(fragment);
 };
 
-export {drawThumbnails};
+const renderPhotos = (photos) => {
+  photos.then((photo) => {
+    drawThumbnails(photo);
+    setFullSizeEventListeners(photo);
+  }).catch((error) => {
+    throw new Error(error);
+  });
+};
+
+export {drawThumbnails, renderPhotos};

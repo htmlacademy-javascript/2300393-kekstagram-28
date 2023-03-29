@@ -1,3 +1,6 @@
+import {receivedPhotos} from './fetch-helper.js';
+import {renderPhotos} from './draw-thumbnails.js';
+
 const imgFilters = document.querySelector('.img-filters');
 const filterButtons = document.querySelectorAll('.img-filters__button');
 
@@ -19,7 +22,7 @@ const setFilterButtonsEvt = () => {
   imgFilters.addEventListener('click', (evt) => {
     if (evt.target.classList.contains('img-filters__button')) {
       changeToButton(evt.target);
-      //console.log(evt.target.classList);
+
     }
   });
 };

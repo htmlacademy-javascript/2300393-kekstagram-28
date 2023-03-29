@@ -35,9 +35,9 @@ const smallerEvt = () => {
   });
 };
 
-const setImgScaleEventListeners = () => {
+const setImgScaleEvt = () => {
   biggerEvt();
   smallerEvt();
 };
 
-export {setImgScale, setImgScaleEventListeners };
+export {setImgScale, setImgScaleEvt };

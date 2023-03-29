@@ -5,7 +5,6 @@ import { setEffectFieldsetEvt } from './nouislider-evt-helper.js';
 import {sendData, receivedPhotos } from './fetch-helper.js';
 import {setFilterButtonsEvt} from './filters-evt-helper.js';
 import {renderPhotos} from './draw-thumbnails.js';
-
 renderPhotos(receivedPhotos);
 setValidationEvt(sendData);
 setImgScaleEvt();

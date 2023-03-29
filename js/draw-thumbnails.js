@@ -22,16 +22,16 @@ const getCloneWithPhotoData = (photo) => {
   return templateClone;
 };
 
-const clearExistRenders = () =>{
+const clearExistRenders = () => {
   const renders = document.querySelectorAll('.pictures .picture');
-  renders.forEach((render)=>render.remove());
+  renders.forEach((render) => render.remove());
 };
 
 const drawThumbnails = (dataArray) => {
   clearExistRenders();
   const fragment = document.createDocumentFragment();
 
-  for(const photo of dataArray){
+  for (const photo of dataArray) {
     fragment.appendChild(getCloneWithPhotoData(photo));
   }
 
@@ -40,12 +40,8 @@ const drawThumbnails = (dataArray) => {
 };
 
 const renderPhotos = (photos) => {
-  photos.then((photo) => {
-    drawThumbnails(photo);
-    setFullSizeEventListeners(photo);
-  }).catch((error) => {
-    throw new Error(error);
-  });
+  drawThumbnails(photos);
+  setFullSizeEventListeners(photos);
 };
 
-export {drawThumbnails, renderPhotos};
+export { drawThumbnails, renderPhotos };

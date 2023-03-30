@@ -1,5 +1,6 @@
 import { receivedPhotos } from './fetch-helper.js';
 import { drawThumbnails } from './draw-thumbnails.js';
+import { debounce } from './debounce.js';
 const RANDOM_COUNT = 10;
 const MAX_RANDOM_FUSE = 10;
 const ACTIVE_BTN_CLASS = 'img-filters__button--active';
@@ -49,22 +50,26 @@ const getRandomPhotos = (photos) => {
 const getPopularPhotos = (photos) => photos.slice().sort((a, b) =>
   (b.comments?.length ?? 0) - (a.comments?.length ?? 0));
 
+const drawPhotosByFilter = () => {
+  const activeFilter = document.querySelector('.img-filters__button--active');
+  const filterId = activeFilter.id;
+  if (filterId === 'filter-random') {
+    drawThumbnails(getRandomPhotos(receivedPhotos));
+  } else if (filterId === 'filter-discussed') {
+    drawThumbnails(getPopularPhotos(receivedPhotos));
+  } else {
+    drawThumbnails(receivedPhotos);
+  }
+};
+
+const debounceByFilter = debounce(drawPhotosByFilter);
+
 const setFilterButtonsEvt = () => {
   imgFilters.addEventListener('click', (evt) => {
     const targetClasses = evt.target.classList;
     if (targetClasses.contains('img-filters__button') && !targetClasses.contains(ACTIVE_BTN_CLASS)) {
       changeToButton(evt.target);
-
-      const filterId = evt.target.id;
-
-      if (filterId === 'filter-random') {
-        drawThumbnails(getRandomPhotos(receivedPhotos));
-      } else if (filterId === 'filter-discussed') {
-        drawThumbnails(getPopularPhotos(receivedPhotos));
-      } else {
-        drawThumbnails(receivedPhotos);
-      }
-
+      debounceByFilter();
     }
   });
 };

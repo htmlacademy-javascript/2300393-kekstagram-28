@@ -51,7 +51,7 @@ const getPopularPhotos = (photos) => photos.slice().sort((a, b) =>
   (b.comments?.length ?? 0) - (a.comments?.length ?? 0));
 
 const drawPhotosByFilter = () => {
-  const activeFilter = document.querySelector('.img-filters__button--active');
+  const activeFilter = document.querySelector(`.${ACTIVE_BTN_CLASS}`);
   const filterId = activeFilter.id;
   if (filterId === 'filter-random') {
     drawThumbnails(getRandomPhotos(receivedPhotos));

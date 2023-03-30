@@ -1,4 +1,5 @@
 import { setFullSizeEventListeners } from './full-size-evt-helper.js';
+import { debounce } from './debounce.js';
 
 const setPhotoData = (templateClone, photo) => {
   const img = templateClone.querySelector('.picture__img');
@@ -28,15 +29,17 @@ const clearExistRenders = () => {
 };
 
 const drawThumbnails = (dataArray) => {
-  clearExistRenders();
-  const fragment = document.createDocumentFragment();
+  debounce(() => {
+    clearExistRenders();
+    const fragment = document.createDocumentFragment();
 
-  for (const photo of dataArray) {
-    fragment.appendChild(getCloneWithPhotoData(photo));
-  }
+    for (const photo of dataArray) {
+      fragment.appendChild(getCloneWithPhotoData(photo));
+    }
 
-  const picturesBlock = document.querySelector('.pictures');
-  picturesBlock.appendChild(fragment);
+    const picturesBlock = document.querySelector('.pictures');
+    picturesBlock.appendChild(fragment);
+  })();
 };
 
 const renderPhotos = (photos) => {

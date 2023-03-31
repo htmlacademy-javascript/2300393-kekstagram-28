@@ -1,3 +1,5 @@
+import { imgContainer } from './img-scale-evt-helper.js';
+import { isEscapeKey } from './util.js';
 const picturesBlock = document.querySelector('.pictures');
 const bigPictureContainer = document.querySelector('.big-picture');
 const bigPictureImg = document.querySelector('.big-picture__img img');
@@ -5,6 +7,7 @@ const socialCaption = document.querySelector('.social__caption');
 const socialCommentCount = document.querySelector('.social__comment-count');
 const commentsContainer = document.querySelector('.social__comments');
 const loadButton = document.querySelector('.social__comments-loader');
+const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 
 let commentsSet = [];
 
@@ -34,8 +37,6 @@ const initCommentsSet = (photos) => {
     pushCommentsToVisible(photo.id);
   });
 };
-
-const isEscapeKey = (evt) => evt.key === 'Escape';
 
 const getCommentTemplateClone = () => {
   const thumbnailsTemplate = document.querySelector('#comment-template').content;
@@ -74,14 +75,14 @@ const initialCommentCounters = (targetCommentsSet) => {
   socialCommentCount.appendChild(commentsCount);
 };
 
-const hideActiveCommentSet = () =>{
+const hideActiveCommentSet = () => {
   const targetSet = commentsSet.find((e) => e.idPhoto.toString() === bigPictureImg.dataset.id.toString());
   targetSet.lastCommentsPack = [];
   targetSet.hiddenComments.unshift(...targetSet.visibleComments);
   targetSet.visibleComments = [];
 };
 
-const resetTargetCommentSetVisible = () =>{
+const resetTargetCommentSetVisible = () => {
   hideActiveCommentSet();
   pushCommentsToVisible(bigPictureImg.dataset.id);
 };
@@ -90,6 +91,15 @@ const setHiddenToBigPicture = () => {
   bigPictureContainer.classList.add('hidden');
   document.body.classList.remove('modal-open');
   resetTargetCommentSetVisible();
+};
+
+const previewShowImg = () => {
+  const file = document.querySelector('#upload-file').files[0];
+  const fileName = file.name.toLowerCase();
+  const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
+  if (matches) {
+    imgContainer.querySelector('img').src = URL.createObjectURL(file);
+  }
 };
 
 const setPictureClickEvt = (photos) => {
@@ -156,4 +166,4 @@ const setFullSizeEventListeners = (photos) => {
   setCommentsLoaderEvt();
 };
 
-export { setFullSizeEventListeners, isEscapeKey };
+export { setFullSizeEventListeners, previewShowImg };

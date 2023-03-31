@@ -1,5 +1,3 @@
-import { drawThumbnails } from './draw-thumbnails.js';
-import { setFullSizeEventListeners } from './full-size-evt-helper.js';
 import { getSuccessMessage } from './form-validation-helper.js';
 const PHOTOS_URL = 'https://28.javascript.pages.academy/kekstagram/data';
 const SEND_URL = 'https://28.javascript.pages.academy/kekstagram';
@@ -16,6 +14,8 @@ const ErrorText = {
   SEND_DATA: 'Не удалось отправить форму. Попробуйте ещё раз',
 };
 
+const imgFilters = document.querySelector('.img-filters');
+
 const load = (route, errorText, method = Method.GET, body = null) =>
   fetch(method === Method.GET ? Route.GET_DATA : Route.SEND_DATA,
     { method, body })
@@ -23,6 +23,7 @@ const load = (route, errorText, method = Method.GET, body = null) =>
       if (!response.ok) {
         throw new Error(errorText);
       }
+      imgFilters.classList.remove('img-filters--inactive');
       return response.json();
     })
     .catch(() => {
@@ -36,20 +37,12 @@ const showError = (error) => {
   errorsDiv.textContent += error;
 };
 
-const getData = () => load(Route.GET_DATA, ErrorText.GET_DATA).catch((e) => showError(e));
+const getData = async () => await load(Route.GET_DATA, ErrorText.GET_DATA).catch((e) => showError(e));
 
 const sendData = (body) => load(Route.SEND_DATA, ErrorText.SEND_DATA, Method.POST, body).then(
   () => getSuccessMessage().classList.remove('hidden')
 ).catch((e) => showError(e));
 
-const fetchPhotos = () => {
+const receivedPhotos = await getData().catch((e) => showError(e));
 
-  getData().then((photos) => {
-    drawThumbnails(photos);
-    setFullSizeEventListeners(photos);
-  }).catch((error) => {
-    throw new Error(error);
-  });
-};
-
-export { getData, sendData, fetchPhotos };
+export { sendData, receivedPhotos};

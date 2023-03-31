@@ -1,3 +1,5 @@
+import { setFullSizeEventListeners } from './full-size-evt-helper.js';
+
 const setPhotoData = (templateClone, photo) => {
   const img = templateClone.querySelector('.picture__img');
   img.src = photo.url;
@@ -20,10 +22,16 @@ const getCloneWithPhotoData = (photo) => {
   return templateClone;
 };
 
+const clearExistRenders = () => {
+  const renders = document.querySelectorAll('.pictures .picture');
+  renders.forEach((render) => render.remove());
+};
+
 const drawThumbnails = (dataArray) => {
+  clearExistRenders();
   const fragment = document.createDocumentFragment();
 
-  for(const photo of dataArray){
+  for (const photo of dataArray) {
     fragment.appendChild(getCloneWithPhotoData(photo));
   }
 
@@ -31,4 +39,9 @@ const drawThumbnails = (dataArray) => {
   picturesBlock.appendChild(fragment);
 };
 
-export {drawThumbnails};
+const renderPhotos = (photos) => {
+  drawThumbnails(photos);
+  setFullSizeEventListeners(photos);
+};
+
+export { drawThumbnails, renderPhotos };

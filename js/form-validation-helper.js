@@ -111,7 +111,7 @@ const setSubmitListener = (submit) => (
   })
 );
 
-const setValidationEventListeners = (submit) => {
+const setValidationEvt = (submit) => {
   initSubmitMessage();
   setSubmitListener(submit);
   uploadFileControl.addEventListener('change', () => {
@@ -137,4 +137,4 @@ const setValidationEventListeners = (submit) => {
   });
 };
 
-export { setValidationEventListeners, getSuccessMessage };
+export { setValidationEvt, getSuccessMessage };

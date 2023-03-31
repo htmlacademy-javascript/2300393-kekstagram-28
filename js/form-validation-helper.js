@@ -1,5 +1,5 @@
 import { isEscapeKey } from './full-size-evt-helper.js';
-import { setImgScale } from './img-scale-evt-helper.js';
+import { setImgScale, imgContainer } from './img-scale-evt-helper.js';
 import { hideSlider, setVisibleImageStyle } from './nouislider-evt-helper.js';
 const uploadFileControl = document.querySelector('#upload-file');
 const uploadOverlay = document.querySelector('.img-upload__overlay');
@@ -10,6 +10,7 @@ const commentInput = document.querySelector('.text__description');
 const MAX_COMMENT_LENGTH = 140;
 const TAG_REGEX = /^#[а-яёa-z0-9]{1,19}$/i;
 const MAX_TAGS_LENGTH = 5;
+const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 
 const pristine = new Pristine(form,
   {
@@ -115,6 +116,14 @@ const setValidationEvt = (submit) => {
   initSubmitMessage();
   setSubmitListener(submit);
   uploadFileControl.addEventListener('change', () => {
+
+    const file = uploadFileControl.files[0];
+    const fileName = file.name.toLowerCase();
+    const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
+    if (matches) {
+      imgContainer.querySelector('img').src = URL.createObjectURL(file);
+    }
+
     setImgScale();
     hideSlider();
     setVisibleImageStyle();

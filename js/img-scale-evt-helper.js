@@ -1,4 +1,5 @@
 const scaleInput = document.querySelector('.scale__control--value');
+const imgContainer = document.querySelector('.img-upload__preview');
 
 const getScaleValue = () => parseInt(scaleInput.value, 10);
 const STEP = 25;
@@ -6,9 +7,8 @@ const MIN_VALUE = 25;
 const MAX_VALUE = 100;
 
 const setImgScale = () => {
-  const img = document.querySelector('.img-upload__preview');
   const needScale = getScaleValue() / 100;
-  img.style.transform = `scale(${needScale})`;
+  imgContainer.style.transform = `scale(${needScale})`;
 };
 
 const biggerEvt = () => {
@@ -40,4 +40,4 @@ const setImgScaleEvt = () => {
   smallerEvt();
 };
 
-export {setImgScale, setImgScaleEvt };
+export {setImgScale, setImgScaleEvt, imgContainer };

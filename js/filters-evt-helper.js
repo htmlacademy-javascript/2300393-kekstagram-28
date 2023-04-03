@@ -1,6 +1,6 @@
 import { receivedPhotos } from './fetch-helper.js';
 import { drawThumbnails } from './draw-thumbnails.js';
-import { debounce } from './debounce.js';
+import { debounce } from './util.js';
 const RANDOM_COUNT = 10;
 const MAX_RANDOM_FUSE = 10;
 const ACTIVE_BTN_CLASS = 'img-filters__button--active';

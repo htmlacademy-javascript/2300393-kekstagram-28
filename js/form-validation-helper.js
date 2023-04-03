@@ -1,6 +1,7 @@
-import { isEscapeKey } from './full-size-evt-helper.js';
+import { previewShowImg } from './full-size-evt-helper.js';
 import { setImgScale } from './img-scale-evt-helper.js';
-import { hideSlider, setVisibleImageStyle } from './nouislider-evt-helper.js';
+import { hideSlider, setVisibleImageStyle } from './effects-helper.js';
+import { isEscapeKey } from './util.js';
 const uploadFileControl = document.querySelector('#upload-file');
 const uploadOverlay = document.querySelector('.img-upload__overlay');
 const imgUploadCancel = document.querySelector('.img-upload__cancel');
@@ -115,6 +116,8 @@ const setValidationEvt = (submit) => {
   initSubmitMessage();
   setSubmitListener(submit);
   uploadFileControl.addEventListener('change', () => {
+
+    previewShowImg();
     setImgScale();
     hideSlider();
     setVisibleImageStyle();

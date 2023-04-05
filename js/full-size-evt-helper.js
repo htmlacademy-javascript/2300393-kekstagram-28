@@ -1,5 +1,6 @@
 import { imgContainer } from './img-scale-evt-helper.js';
 import { isEscapeKey } from './util.js';
+const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 const picturesBlock = document.querySelector('.pictures');
 const bigPictureContainer = document.querySelector('.big-picture');
 const bigPictureImg = document.querySelector('.big-picture__img img');
@@ -7,7 +8,6 @@ const socialCaption = document.querySelector('.social__caption');
 const socialCommentCount = document.querySelector('.social__comment-count');
 const commentsContainer = document.querySelector('.social__comments');
 const loadButton = document.querySelector('.social__comments-loader');
-const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 
 let commentsSet = [];
 

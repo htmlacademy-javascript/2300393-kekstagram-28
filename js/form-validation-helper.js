@@ -11,6 +11,7 @@ const commentInput = document.querySelector('.text__description');
 const MAX_COMMENT_LENGTH = 140;
 const TAG_REGEX = /^#[а-яёa-z0-9]{1,19}$/i;
 const MAX_TAGS_LENGTH = 5;
+const DEFAULT_SCALE = '100%';
 
 const pristine = new Pristine(form,
   {
@@ -58,7 +59,7 @@ const returnDefaultValues = (sendingSuccessful = false) => {
     return;
   }
 
-  document.querySelector('.scale__control--value').value = '55%';
+  document.querySelector('.scale__control--value').value = DEFAULT_SCALE;
   document.querySelector('.effect-level__value').value = '';
   document.querySelector('.img-upload__effects').value = '';
   hashtagInput.value = '';

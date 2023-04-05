@@ -52,8 +52,12 @@ const validateHashtag = (thisTags) => {
   return true;
 };
 
-const returnDefaultValues = () => {
+const returnDefaultValues = (sendingSuccessful = false) => {
   uploadFileControl.value = '';
+  if (!sendingSuccessful) {
+    return;
+  }
+
   document.querySelector('.scale__control--value').value = '55%';
   document.querySelector('.effect-level__value').value = '';
   document.querySelector('.img-upload__effects').value = '';
@@ -61,11 +65,11 @@ const returnDefaultValues = () => {
   commentInput.value = '';
 };
 
-const closeValidationForm = () => {
+const closeValidationForm = (sendingSuccessful = true) => {
   if (!uploadOverlay.classList.contains('hidden')) {
     uploadOverlay.classList.add('hidden');
     document.body.classList.remove('modal-open');
-    returnDefaultValues();
+    returnDefaultValues(sendingSuccessful);
   }
 };
 
@@ -105,8 +109,8 @@ const setSubmitListener = (submit) => (
       return;
     }
     submitButton.disabled = true;
-    submit(new FormData(evt.target)).then(() => {
-      closeValidationForm();
+    submit(new FormData(evt.target)).then((result) => {
+      closeValidationForm(result);
       submitButton.disabled = false;
     });
   })

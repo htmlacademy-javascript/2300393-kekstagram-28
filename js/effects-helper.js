@@ -89,15 +89,19 @@ const setVisibleImageStyle = () => {
   previewElement.style.filter = `${thisEffect.filter}(${sliderValueElement.value}${thisEffect.dimension})`;
 };
 
+const setTargetEffect = (effect) => {
+  const targetEffect = getActiveEffectElementByName(effect);
+
+  effectFieldsetElement.value = targetEffect.effect;
+  updateSliderParams();
+  setVisibleImageStyle();
+};
+
 const setEffectFieldsetEvt = () => {
   sliderElement.visiblity = 'hidden';
   effectUlElement.addEventListener('click', (evt) => {
     if (evt.target.classList.contains('effects__radio')) {
-      const targetEffect = getActiveEffectElementByName(evt.target.value);
-
-      effectFieldsetElement.value = targetEffect.effect;
-      updateSliderParams();
-      setVisibleImageStyle();
+      setTargetEffect(evt.target.value);
     }
   });
   sliderElement.noUiSlider.on('update', () => {

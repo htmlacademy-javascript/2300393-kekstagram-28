@@ -30,7 +30,7 @@ const initCommentsSet = (photos) => {
     const comments = {
       idPhoto: photo.id,
       visibleComments: [],
-      hiddenComments: photo.comments,
+      hiddenComments: photo.comments.slice(0),
       lastCommentsPack: []
     };
     commentsSet.push(comments);

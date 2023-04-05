@@ -108,11 +108,13 @@ const setSubmitListener = (submit) => (
     if (!pristine.validate(hashtagInput) || !pristine.validate(commentInput)) {
       return;
     }
-    submitButton.disabled = true;
-    submit(new FormData(evt.target)).then((result) => {
-      closeValidationForm(result);
-      submitButton.disabled = false;
-    });
+    if (!submitButton.disabled) {
+      submitButton.disabled = true;
+      submit(new FormData(evt.target)).then((result) => {
+        closeValidationForm(result);
+        submitButton.disabled = false;
+      });
+    }
   })
 );
 

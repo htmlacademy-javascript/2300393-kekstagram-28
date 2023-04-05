@@ -16,7 +16,7 @@ const ErrorText = {
 
 const imgFilters = document.querySelector('.img-filters');
 
-const load = (route, errorText, method = Method.GET, body = null) =>
+const load = (errorText, method = Method.GET, body = null) =>
   fetch(method === Method.GET ? Route.GET_DATA : Route.SEND_DATA,
     { method, body })
     .then((response) => {
@@ -37,9 +37,9 @@ const showError = (error) => {
   errorsDiv.textContent += error;
 };
 
-const getData = async () => await load(Route.GET_DATA, ErrorText.GET_DATA).catch((e) => showError(e));
+const getData = async () => await load(ErrorText.GET_DATA).catch((e) => showError(e));
 
-const sendData = (body) => load(Route.SEND_DATA, ErrorText.SEND_DATA, Method.POST, body).then(
+const sendData = (body) => load(ErrorText.SEND_DATA, Method.POST, body).then(
   () => {
     getSuccessMessage().classList.remove('hidden');
     return true;

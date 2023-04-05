@@ -49,12 +49,12 @@ const EFFECTS_PARAMS = [
   }
 ];
 
-const effectUl = document.querySelector('.effects__list');
-const preview = document.querySelector('.img-upload__preview > img');
-const effectFieldset = document.querySelector('.img-upload__effects');
-const getActiveEffectByName = (effect) => EFFECTS_PARAMS.find((e) => (e.effect === effect));
+const effectUlElement = document.querySelector('.effects__list');
+const previewElement = document.querySelector('.img-upload__preview > img');
+const effectFieldsetElement = document.querySelector('.img-upload__effects');
+const getActiveEffectElementByName = (effect) => EFFECTS_PARAMS.find((e) => (e.effect === effect));
 
-const getActiveEffectFromImage = () => EFFECTS_PARAMS.find((e) => (e.effect === effectFieldset.value));
+const getActiveEffectFromImage = () => EFFECTS_PARAMS.find((e) => (e.effect === effectFieldsetElement.value));
 
 const sliderElement = document.querySelector('.effect-level__slider');
 const sliderValueElement = document.querySelector('.effect-level__value');
@@ -64,7 +64,7 @@ const hideSlider = () => sliderElementParent.classList.add('hidden');
 
 const updateSliderParams = () => {
   const thisEffect = getActiveEffectFromImage();
-  if (effectFieldset.value === 'none') {
+  if (effectFieldsetElement.value === 'none') {
     hideSlider();
     sliderValueElement.value = null;
     return;
@@ -83,19 +83,19 @@ const updateSliderParams = () => {
 const setVisibleImageStyle = () => {
   const thisEffect = getActiveEffectFromImage();
   if (!thisEffect?.filter) {
-    preview.style.filter = '';
+    previewElement.style.filter = '';
     return;
   }
-  preview.style.filter = `${thisEffect.filter}(${sliderValueElement.value}${thisEffect.dimension})`;
+  previewElement.style.filter = `${thisEffect.filter}(${sliderValueElement.value}${thisEffect.dimension})`;
 };
 
 const setEffectFieldsetEvt = () => {
   sliderElement.visiblity = 'hidden';
-  effectUl.addEventListener('click', (evt) => {
+  effectUlElement.addEventListener('click', (evt) => {
     if (evt.target.classList.contains('effects__radio')) {
-      const targetEffect = getActiveEffectByName(evt.target.value);
+      const targetEffect = getActiveEffectElementByName(evt.target.value);
 
-      effectFieldset.value = targetEffect.effect;
+      effectFieldsetElement.value = targetEffect.effect;
       updateSliderParams();
       setVisibleImageStyle();
     }

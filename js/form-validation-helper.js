@@ -2,16 +2,16 @@ import { previewShowImg } from './full-size-evt-helper.js';
 import { setImgScale } from './img-scale-evt-helper.js';
 import { hideSlider, setVisibleImageStyle } from './effects-helper.js';
 import { isEscapeKey } from './util.js';
+const MAX_COMMENT_LENGTH = 140;
+const TAG_REGEX = /^#[а-яёa-z0-9]{1,19}$/i;
+const MAX_TAGS_LENGTH = 5;
+const DEFAULT_SCALE = '100%';
 const uploadFileControl = document.querySelector('#upload-file');
 const uploadOverlay = document.querySelector('.img-upload__overlay');
 const imgUploadCancel = document.querySelector('.img-upload__cancel');
 const form = document.querySelector('.img-upload__form');
 const hashtagInput = document.querySelector('.text__hashtags');
 const commentInput = document.querySelector('.text__description');
-const MAX_COMMENT_LENGTH = 140;
-const TAG_REGEX = /^#[а-яёa-z0-9]{1,19}$/i;
-const MAX_TAGS_LENGTH = 5;
-const DEFAULT_SCALE = '100%';
 
 const pristine = new Pristine(form,
   {

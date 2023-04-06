@@ -2,15 +2,16 @@ import { previewShowImg } from './full-size-evt-helper.js';
 import { setImgScale } from './img-scale-evt-helper.js';
 import { hideSlider, setVisibleImageStyle } from './effects-helper.js';
 import { isEscapeKey } from './util.js';
+const MAX_COMMENT_LENGTH = 140;
+const TAG_REGEX = /^#[а-яёa-z0-9]{1,19}$/i;
+const MAX_TAGS_LENGTH = 5;
+const DEFAULT_SCALE = '100%';
 const uploadFileControl = document.querySelector('#upload-file');
 const uploadOverlay = document.querySelector('.img-upload__overlay');
 const imgUploadCancel = document.querySelector('.img-upload__cancel');
 const form = document.querySelector('.img-upload__form');
 const hashtagInput = document.querySelector('.text__hashtags');
 const commentInput = document.querySelector('.text__description');
-const MAX_COMMENT_LENGTH = 140;
-const TAG_REGEX = /^#[а-яёa-z0-9]{1,19}$/i;
-const MAX_TAGS_LENGTH = 5;
 
 const pristine = new Pristine(form,
   {
@@ -52,20 +53,24 @@ const validateHashtag = (thisTags) => {
   return true;
 };
 
-const returnDefaultValues = () => {
+const returnDefaultValues = (sendingSuccessful = false) => {
   uploadFileControl.value = '';
-  document.querySelector('.scale__control--value').value = '55%';
+  if (!sendingSuccessful) {
+    return;
+  }
+
+  document.querySelector('.scale__control--value').value = DEFAULT_SCALE;
   document.querySelector('.effect-level__value').value = '';
   document.querySelector('.img-upload__effects').value = '';
   hashtagInput.value = '';
   commentInput.value = '';
 };
 
-const closeValidationForm = () => {
+const closeValidationForm = (sendingSuccessful = true) => {
   if (!uploadOverlay.classList.contains('hidden')) {
     uploadOverlay.classList.add('hidden');
     document.body.classList.remove('modal-open');
-    returnDefaultValues();
+    returnDefaultValues(sendingSuccessful);
   }
 };
 
@@ -104,11 +109,13 @@ const setSubmitListener = (submit) => (
     if (!pristine.validate(hashtagInput) || !pristine.validate(commentInput)) {
       return;
     }
-    submitButton.disabled = true;
-    submit(new FormData(evt.target)).then(() => {
-      closeValidationForm();
-      submitButton.disabled = false;
-    });
+    if (!submitButton.disabled) {
+      submitButton.disabled = true;
+      submit(new FormData(evt.target)).then((result) => {
+        closeValidationForm(result);
+        submitButton.disabled = false;
+      });
+    }
   })
 );
 

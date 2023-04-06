@@ -1,10 +1,11 @@
+const STEP = 25;
+const MIN_VALUE = 25;
+const MAX_VALUE = 100;
+
 const scaleInput = document.querySelector('.scale__control--value');
 const imgContainer = document.querySelector('.img-upload__preview');
 
 const getScaleValue = () => parseInt(scaleInput.value, 10);
-const STEP = 25;
-const MIN_VALUE = 25;
-const MAX_VALUE = 100;
 
 const setImgScale = () => {
   const needScale = getScaleValue() / 100;

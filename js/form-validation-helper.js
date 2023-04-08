@@ -53,12 +53,8 @@ const validateHashtag = (thisTags) => {
   return true;
 };
 
-const returnDefaultValues = (sendingSuccessful = false) => {
+const returnDefaultValues = () => {
   uploadFileControl.value = '';
-  if (!sendingSuccessful) {
-    return;
-  }
-
   document.querySelector('.scale__control--value').value = DEFAULT_SCALE;
   document.querySelector('.effect-level__value').value = '';
   document.querySelector('.img-upload__effects').value = '';
@@ -67,10 +63,10 @@ const returnDefaultValues = (sendingSuccessful = false) => {
 };
 
 const closeValidationForm = (sendingSuccessful = true) => {
-  if (!uploadOverlay.classList.contains('hidden')) {
+  if (!uploadOverlay.classList.contains('hidden') && sendingSuccessful) {
     uploadOverlay.classList.add('hidden');
     document.body.classList.remove('modal-open');
-    returnDefaultValues(sendingSuccessful);
+    returnDefaultValues();
   }
 };
 

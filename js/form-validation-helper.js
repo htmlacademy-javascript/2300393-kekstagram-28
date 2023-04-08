@@ -2,9 +2,12 @@ import { previewShowImg } from './full-size-evt-helper.js';
 import { setImgScale } from './img-scale-evt-helper.js';
 import { hideSlider, setVisibleImageStyle } from './effects-helper.js';
 import { isEscapeKey } from './util.js';
-const MAX_COMMENT_LENGTH = 140;
-const TAG_REGEX = /^#[а-яёa-z0-9]{1,19}$/i;
-const MAX_TAGS_LENGTH = 5;
+const ValidationParameters = {
+  MAX_COMMENT_LENGTH: 140,
+  TAG_REGEX: /^#[а-яёa-z0-9]{1,19}$/i,
+  MAX_TAGS_LENGTH: 5
+};
+
 const DEFAULT_SCALE = '100%';
 const uploadFileControl = document.querySelector('#upload-file');
 const uploadOverlay = document.querySelector('.img-upload__overlay');
@@ -25,7 +28,7 @@ const validateComment = (thisComment) => {
   if (!thisComment) {
     return true;
   }
-  if (thisComment.length > MAX_COMMENT_LENGTH) {
+  if (thisComment.length > ValidationParameters.MAX_COMMENT_LENGTH) {
     return false;
   }
   return true;
@@ -37,11 +40,11 @@ const validateHashtag = (thisTags) => {
 
   const existTags = [];
   const tags = thisTags.split(/\s+/);
-  if (tags.length > MAX_TAGS_LENGTH) {
+  if (tags.length > ValidationParameters.MAX_TAGS_LENGTH) {
     return false;
   }
   for (const tag of tags) {
-    if (!TAG_REGEX.test(tag)) {
+    if (!ValidationParameters.TAG_REGEX.test(tag)) {
       return false;
     }
 

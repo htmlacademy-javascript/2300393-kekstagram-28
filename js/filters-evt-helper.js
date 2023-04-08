@@ -1,8 +1,11 @@
 import { receivedPhotos } from './fetch-helper.js';
 import { drawThumbnails } from './draw-thumbnails.js';
 import { debounce } from './util.js';
-const RANDOM_COUNT = 10;
-const MAX_RANDOM_FUSE = 10;
+const RandomParameters = {
+  RANDOM_COUNT: 10,
+  MAX_RANDOM_FUSE: 10
+};
+
 const ACTIVE_BTN_CLASS = 'img-filters__button--active';
 const imgFilters = document.querySelector('.img-filters');
 const filterButtons = document.querySelectorAll('.img-filters__button');
@@ -28,10 +31,10 @@ const getRandomKeys = (maxLength) => {
   if (!maxLength || maxLength === 0) {
     return randomKeys;
   }
-  for (let i = 0; i < RANDOM_COUNT; i++) {
+  for (let i = 0; i < RandomParameters.RANDOM_COUNT; i++) {
     let randKey = getRandomKey(maxLength);
     let attempt = 1;
-    while (randomKeys.includes(randKey) && attempt < MAX_RANDOM_FUSE) {
+    while (randomKeys.includes(randKey) && attempt < RandomParameters.MAX_RANDOM_FUSE) {
       randKey = Math.floor(Math.random() * maxLength);
       attempt++;
     }

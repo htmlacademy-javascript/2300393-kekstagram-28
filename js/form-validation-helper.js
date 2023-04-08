@@ -2,9 +2,12 @@ import { previewShowImg } from './full-size-evt-helper.js';
 import { setImgScale } from './img-scale-evt-helper.js';
 import { hideSlider, setVisibleImageStyle } from './effects-helper.js';
 import { isEscapeKey } from './util.js';
-const MAX_COMMENT_LENGTH = 140;
-const TAG_REGEX = /^#[а-яёa-z0-9]{1,19}$/i;
-const MAX_TAGS_LENGTH = 5;
+const ValidationParameters = {
+  MAX_COMMENT_LENGTH: 140,
+  TAG_REGEX: /^#[а-яёa-z0-9]{1,19}$/i,
+  MAX_TAGS_LENGTH: 5
+};
+
 const DEFAULT_SCALE = '100%';
 const uploadFileControl = document.querySelector('#upload-file');
 const uploadOverlay = document.querySelector('.img-upload__overlay');
@@ -25,7 +28,7 @@ const validateComment = (thisComment) => {
   if (!thisComment) {
     return true;
   }
-  if (thisComment.length > MAX_COMMENT_LENGTH) {
+  if (thisComment.length > ValidationParameters.MAX_COMMENT_LENGTH) {
     return false;
   }
   return true;
@@ -37,11 +40,11 @@ const validateHashtag = (thisTags) => {
 
   const existTags = [];
   const tags = thisTags.split(/\s+/);
-  if (tags.length > MAX_TAGS_LENGTH) {
+  if (tags.length > ValidationParameters.MAX_TAGS_LENGTH) {
     return false;
   }
   for (const tag of tags) {
-    if (!TAG_REGEX.test(tag)) {
+    if (!ValidationParameters.TAG_REGEX.test(tag)) {
       return false;
     }
 
@@ -53,12 +56,8 @@ const validateHashtag = (thisTags) => {
   return true;
 };
 
-const returnDefaultValues = (sendingSuccessful = false) => {
+const returnDefaultValues = () => {
   uploadFileControl.value = '';
-  if (!sendingSuccessful) {
-    return;
-  }
-
   document.querySelector('.scale__control--value').value = DEFAULT_SCALE;
   document.querySelector('.effect-level__value').value = '';
   document.querySelector('.img-upload__effects').value = '';
@@ -66,16 +65,36 @@ const returnDefaultValues = (sendingSuccessful = false) => {
   commentInput.value = '';
 };
 
-const closeValidationForm = (sendingSuccessful = true) => {
+const closeValidationForm = () => {
   if (!uploadOverlay.classList.contains('hidden')) {
     uploadOverlay.classList.add('hidden');
     document.body.classList.remove('modal-open');
-    returnDefaultValues(sendingSuccessful);
+    returnDefaultValues();
   }
 };
 
 pristine.addValidator(hashtagInput, validateHashtag, 'Хештеги не удовлетворяют правилам!');
 pristine.addValidator(commentInput, validateComment, 'Комментарий не удовлетворяет правилам!');
+
+const getErrorSendTemplateClone = () => {
+  const errorTemplate = document.querySelector('#send-error').content;
+  return errorTemplate.cloneNode(true);
+};
+const getErrorMessage = () => document.querySelector('.send-error');
+const hideErrorMessage = () => {
+  getErrorMessage().classList.add('hidden');
+};
+const initErrorMessage = () => {
+  const sendTemplate = getErrorSendTemplateClone();
+  document.querySelector('body').appendChild(sendTemplate);
+
+  const errorMessage = getErrorMessage();
+  hideErrorMessage();
+
+  errorMessage.querySelector('.error__button').addEventListener('click', () => {
+    hideErrorMessage();
+  });
+};
 
 const getOkSendTemplateClone = () => {
   const successTemplate = document.querySelector('#success').content;
@@ -89,7 +108,6 @@ const submitButton = () => document.querySelector('#upload-submit');
 const hideSuccessMessage = () => {
   getSuccessMessage().classList.add('hidden');
 };
-
 
 const initSubmitMessage = () => {
   const sendTemplate = getOkSendTemplateClone();
@@ -112,7 +130,11 @@ const setSubmitListener = (submit) => (
     if (!submitButton.disabled) {
       submitButton.disabled = true;
       submit(new FormData(evt.target)).then((result) => {
-        closeValidationForm(result);
+        if (result) {
+          closeValidationForm();
+        } else {
+          getErrorMessage().classList.remove('hidden');
+        }
         submitButton.disabled = false;
       });
     }
@@ -121,6 +143,7 @@ const setSubmitListener = (submit) => (
 
 const setValidationEvt = (submit) => {
   initSubmitMessage();
+  initErrorMessage();
   setSubmitListener(submit);
   uploadFileControl.addEventListener('change', () => {
 
@@ -137,14 +160,19 @@ const setValidationEvt = (submit) => {
   });
 
   document.addEventListener('keydown', (evt) => {
-    if (isEscapeKey(evt) && document.activeElement === document.body) {
+    if(!(isEscapeKey(evt) || !document.activeElement === document.body)) {
+      return;
+    }
+    if (getErrorMessage().classList.contains('hidden')) {
       evt.preventDefault();
       closeValidationForm();
 
       hideSuccessMessage();
       evt.stopPropagation();
+    }else{
+      hideErrorMessage();
     }
   });
 };
 
-export { setValidationEvt, getSuccessMessage };
+export { setValidationEvt, getSuccessMessage, getErrorMessage };

@@ -1415,8 +1415,6 @@ main {
   border-color: red;
   border-style: dotted;
   text-align: center;
-  position: relative;
-  z-index: 10;
 }
 
 .full-display-width{

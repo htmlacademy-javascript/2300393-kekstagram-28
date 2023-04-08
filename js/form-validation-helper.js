@@ -65,8 +65,8 @@ const returnDefaultValues = () => {
   commentInput.value = '';
 };
 
-const closeValidationForm = (sendingSuccessful = true) => {
-  if (!uploadOverlay.classList.contains('hidden') && sendingSuccessful) {
+const closeValidationForm = () => {
+  if (!uploadOverlay.classList.contains('hidden')) {
     uploadOverlay.classList.add('hidden');
     document.body.classList.remove('modal-open');
     returnDefaultValues();
@@ -75,6 +75,26 @@ const closeValidationForm = (sendingSuccessful = true) => {
 
 pristine.addValidator(hashtagInput, validateHashtag, 'Хештеги не удовлетворяют правилам!');
 pristine.addValidator(commentInput, validateComment, 'Комментарий не удовлетворяет правилам!');
+
+const getErrorSendTemplateClone = () => {
+  const errorTemplate = document.querySelector('#send-error').content;
+  return errorTemplate.cloneNode(true);
+};
+const getErrorMessage = () => document.querySelector('.send-error');
+const hideErrorMessage = () => {
+  getErrorMessage().classList.add('hidden');
+};
+const initErrorMessage = () => {
+  const sendTemplate = getErrorSendTemplateClone();
+  document.querySelector('body').appendChild(sendTemplate);
+
+  const errorMessage = getErrorMessage();
+  hideErrorMessage();
+
+  errorMessage.querySelector('.error__button').addEventListener('click', () => {
+    hideErrorMessage();
+  });
+};
 
 const getOkSendTemplateClone = () => {
   const successTemplate = document.querySelector('#success').content;
@@ -88,7 +108,6 @@ const submitButton = () => document.querySelector('#upload-submit');
 const hideSuccessMessage = () => {
   getSuccessMessage().classList.add('hidden');
 };
-
 
 const initSubmitMessage = () => {
   const sendTemplate = getOkSendTemplateClone();
@@ -111,7 +130,11 @@ const setSubmitListener = (submit) => (
     if (!submitButton.disabled) {
       submitButton.disabled = true;
       submit(new FormData(evt.target)).then((result) => {
-        closeValidationForm(result);
+        if (result) {
+          closeValidationForm();
+        } else {
+          getErrorMessage().classList.remove('hidden');
+        }
         submitButton.disabled = false;
       });
     }
@@ -120,6 +143,7 @@ const setSubmitListener = (submit) => (
 
 const setValidationEvt = (submit) => {
   initSubmitMessage();
+  initErrorMessage();
   setSubmitListener(submit);
   uploadFileControl.addEventListener('change', () => {
 
@@ -136,14 +160,19 @@ const setValidationEvt = (submit) => {
   });
 
   document.addEventListener('keydown', (evt) => {
-    if (isEscapeKey(evt) && document.activeElement === document.body) {
+    if(!(isEscapeKey(evt) || !document.activeElement === document.body)) {
+      return;
+    }
+    if (getErrorMessage().classList.contains('hidden')) {
       evt.preventDefault();
       closeValidationForm();
 
       hideSuccessMessage();
       evt.stopPropagation();
+    }else{
+      hideErrorMessage();
     }
   });
 };
 
-export { setValidationEvt, getSuccessMessage };
+export { setValidationEvt, getSuccessMessage, getErrorMessage };

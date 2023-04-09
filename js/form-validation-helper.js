@@ -65,14 +65,6 @@ const returnDefaultValues = () => {
   commentInput.value = '';
 };
 
-const closeValidationForm = () => {
-  if (!uploadOverlay.classList.contains('hidden')) {
-    uploadOverlay.classList.add('hidden');
-    document.body.classList.remove('modal-open');
-    returnDefaultValues();
-  }
-};
-
 pristine.addValidator(hashtagInput, validateHashtag, 'Хештеги не удовлетворяют правилам!');
 pristine.addValidator(commentInput, validateComment, 'Комментарий не удовлетворяет правилам!');
 
@@ -121,6 +113,30 @@ const initSubmitMessage = () => {
   });
 };
 
+const getEscapeEvt = (evt) => {
+  if (!(isEscapeKey(evt) || !document.activeElement === document.body)) {
+    return;
+  }
+  if (getErrorMessage().classList.contains('hidden')) {
+    evt.preventDefault();
+    closeValidationForm();
+
+    hideSuccessMessage();
+    evt.stopPropagation();
+  } else {
+    hideErrorMessage();
+  }
+};
+
+function closeValidationForm () {
+  if (!uploadOverlay.classList.contains('hidden')) {
+    uploadOverlay.classList.add('hidden');
+    document.body.classList.remove('modal-open');
+    returnDefaultValues();
+    document.removeEventListener('keydown', getEscapeEvt);
+  }
+}
+
 const setSubmitListener = (submit) => (
   form.addEventListener('submit', (evt) => {
     evt.preventDefault();
@@ -146,32 +162,17 @@ const setValidationEvt = (submit) => {
   initErrorMessage();
   setSubmitListener(submit);
   uploadFileControl.addEventListener('change', () => {
-
     previewShowImg();
     setImgScale();
     hideSlider();
     setVisibleImageStyle();
     uploadOverlay.classList.remove('hidden');
     document.body.classList.add('modal-open');
+    document.addEventListener('keydown', getEscapeEvt);
   });
 
   imgUploadCancel.addEventListener('click', () => {
     closeValidationForm();
-  });
-
-  document.addEventListener('keydown', (evt) => {
-    if(!(isEscapeKey(evt) || !document.activeElement === document.body)) {
-      return;
-    }
-    if (getErrorMessage().classList.contains('hidden')) {
-      evt.preventDefault();
-      closeValidationForm();
-
-      hideSuccessMessage();
-      evt.stopPropagation();
-    }else{
-      hideErrorMessage();
-    }
   });
 };
 

@@ -6,12 +6,13 @@ const ScaleSettings = {
 
 const scaleInput = document.querySelector('.scale__control--value');
 const imgContainer = document.querySelector('.img-upload__preview');
+const imgPreview = document.querySelector('.img-upload__preview img');
 
 const getScaleValue = () => parseInt(scaleInput.value, 10);
 
 const setImgScale = () => {
   const needScale = getScaleValue() / ScaleSettings.MAX_VALUE;
-  imgContainer.style.transform = `scale(${needScale})`;
+  imgPreview.style.transform = `scale(${needScale})`;
 };
 
 const biggerEvt = () => {

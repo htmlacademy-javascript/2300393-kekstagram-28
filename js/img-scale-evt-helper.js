@@ -15,7 +15,7 @@ const setImgScale = () => {
   imgPreview.style.transform = `scale(${needScale})`;
 };
 
-const biggerEvt = () => {
+const enlargeEvt = () => {
   const biggerButton = document.querySelector('.scale__control--bigger');
   biggerButton.addEventListener('click', () => {
     let needValue = getScaleValue() + ScaleSettings.STEP;
@@ -27,7 +27,7 @@ const biggerEvt = () => {
   });
 };
 
-const smallerEvt = () => {
+const reduceEvt = () => {
   const biggerButton = document.querySelector('.scale__control--smaller');
   biggerButton.addEventListener('click', () => {
     let needValue = getScaleValue() - ScaleSettings.STEP;
@@ -40,8 +40,8 @@ const smallerEvt = () => {
 };
 
 const setImgScaleEvt = () => {
-  biggerEvt();
-  smallerEvt();
+  enlargeEvt();
+  reduceEvt();
 };
 
 export { setImgScale, setImgScaleEvt, imgContainer };

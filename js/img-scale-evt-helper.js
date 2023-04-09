@@ -10,7 +10,7 @@ const imgContainer = document.querySelector('.img-upload__preview');
 const getScaleValue = () => parseInt(scaleInput.value, 10);
 
 const setImgScale = () => {
-  const needScale = getScaleValue() / 100;
+  const needScale = getScaleValue() / ScaleSettings.MAX_VALUE;
   imgContainer.style.transform = `scale(${needScale})`;
 };
 

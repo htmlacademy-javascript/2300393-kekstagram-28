@@ -108,8 +108,11 @@ const initSubmitMessage = () => {
   const successMessage = getSuccessMessage();
   hideSuccessMessage();
 
-  successMessage.querySelector('.success__button').addEventListener('click', () => {
-    hideSuccessMessage();
+  successMessage.addEventListener('click', (evt) => {
+    const targetClassList = evt.target.classList;
+    if (targetClassList.contains('success') || targetClassList.contains('success__button')) {
+      hideSuccessMessage();
+    }
   });
 };
 

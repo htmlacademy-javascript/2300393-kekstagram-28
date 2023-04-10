@@ -65,14 +65,6 @@ const returnDefaultValues = () => {
   commentInput.value = '';
 };
 
-const closeValidationForm = () => {
-  if (!uploadOverlay.classList.contains('hidden')) {
-    uploadOverlay.classList.add('hidden');
-    document.body.classList.remove('modal-open');
-    returnDefaultValues();
-  }
-};
-
 pristine.addValidator(hashtagInput, validateHashtag, 'Хештеги не удовлетворяют правилам!');
 pristine.addValidator(commentInput, validateComment, 'Комментарий не удовлетворяет правилам!');
 
@@ -107,7 +99,14 @@ const submitButton = () => document.querySelector('#upload-submit');
 
 const hideSuccessMessage = () => {
   getSuccessMessage().classList.add('hidden');
+  document.removeEventListener('keydown', getSuccessEscapeEvt);
 };
+
+function getSuccessEscapeEvt (evt) {
+  if(isEscapeKey(evt)){
+    hideSuccessMessage();
+  }
+}
 
 const initSubmitMessage = () => {
   const sendTemplate = getOkSendTemplateClone();
@@ -116,10 +115,37 @@ const initSubmitMessage = () => {
   const successMessage = getSuccessMessage();
   hideSuccessMessage();
 
-  successMessage.querySelector('.success__button').addEventListener('click', () => {
-    hideSuccessMessage();
+  successMessage.addEventListener('click', (evt) => {
+    const targetClassList = evt.target.classList;
+    if (targetClassList.contains('success') || targetClassList.contains('success__button')) {
+      hideSuccessMessage();
+    }
   });
 };
+
+const getEscapeEvt = (evt) => {
+  if (!isEscapeKey(evt) || document.activeElement === hashtagInput || document.activeElement === commentInput) {
+    return;
+  }
+  if (getErrorMessage().classList.contains('hidden')) {
+    evt.preventDefault();
+    closeValidationForm();
+
+    hideSuccessMessage();
+    evt.stopPropagation();
+  } else {
+    hideErrorMessage();
+  }
+};
+
+function closeValidationForm() {
+  if (!uploadOverlay.classList.contains('hidden')) {
+    uploadOverlay.classList.add('hidden');
+    document.body.classList.remove('modal-open');
+    returnDefaultValues();
+    document.removeEventListener('keydown', getEscapeEvt);
+  }
+}
 
 const setSubmitListener = (submit) => (
   form.addEventListener('submit', (evt) => {
@@ -146,33 +172,18 @@ const setValidationEvt = (submit) => {
   initErrorMessage();
   setSubmitListener(submit);
   uploadFileControl.addEventListener('change', () => {
-
     previewShowImg();
     setImgScale();
     hideSlider();
     setVisibleImageStyle();
     uploadOverlay.classList.remove('hidden');
     document.body.classList.add('modal-open');
+    document.addEventListener('keydown', getEscapeEvt);
   });
 
   imgUploadCancel.addEventListener('click', () => {
     closeValidationForm();
   });
-
-  document.addEventListener('keydown', (evt) => {
-    if(!(isEscapeKey(evt) || !document.activeElement === document.body)) {
-      return;
-    }
-    if (getErrorMessage().classList.contains('hidden')) {
-      evt.preventDefault();
-      closeValidationForm();
-
-      hideSuccessMessage();
-      evt.stopPropagation();
-    }else{
-      hideErrorMessage();
-    }
-  });
 };
 
-export { setValidationEvt, getSuccessMessage, getErrorMessage };
+export { setValidationEvt, getSuccessMessage, getErrorMessage, getSuccessEscapeEvt };

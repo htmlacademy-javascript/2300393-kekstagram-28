@@ -1,4 +1,4 @@
-import { getSuccessMessage } from './form-validation-helper.js';
+import { getSuccessMessage, getSuccessEscapeEvt } from './form-validation-helper.js';
 const PHOTOS_URL = 'https://28.javascript.pages.academy/kekstagram/data';
 const SEND_URL = 'https://28.javascript.pages.academy/kekstagram';
 const Route = {
@@ -42,6 +42,7 @@ const getData = async () => await load(ErrorText.GET_DATA).catch((e) => showErro
 const sendData = (body) => load(ErrorText.SEND_DATA, Method.POST, body).then(
   () => {
     getSuccessMessage().classList.remove('hidden');
+    document.addEventListener('keydown', getSuccessEscapeEvt);
     return true;
   }
 ).catch((e) => {

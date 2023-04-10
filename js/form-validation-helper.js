@@ -99,7 +99,14 @@ const submitButton = () => document.querySelector('#upload-submit');
 
 const hideSuccessMessage = () => {
   getSuccessMessage().classList.add('hidden');
+  document.removeEventListener('keydown', getSuccessEscapeEvt);
 };
+
+function getSuccessEscapeEvt (evt) {
+  if(isEscapeKey(evt)){
+    hideSuccessMessage();
+  }
+}
 
 const initSubmitMessage = () => {
   const sendTemplate = getOkSendTemplateClone();
@@ -179,4 +186,4 @@ const setValidationEvt = (submit) => {
   });
 };
 
-export { setValidationEvt, getSuccessMessage, getErrorMessage };
+export { setValidationEvt, getSuccessMessage, getErrorMessage, getSuccessEscapeEvt };

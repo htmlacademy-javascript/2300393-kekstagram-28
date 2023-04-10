@@ -114,7 +114,7 @@ const initSubmitMessage = () => {
 };
 
 const getEscapeEvt = (evt) => {
-  if (!(isEscapeKey(evt) || !document.activeElement === document.body)) {
+  if (!isEscapeKey(evt) || document.activeElement === hashtagInput || document.activeElement === commentInput) {
     return;
   }
   if (getErrorMessage().classList.contains('hidden')) {
@@ -128,7 +128,7 @@ const getEscapeEvt = (evt) => {
   }
 };
 
-function closeValidationForm () {
+function closeValidationForm() {
   if (!uploadOverlay.classList.contains('hidden')) {
     uploadOverlay.classList.add('hidden');
     document.body.classList.remove('modal-open');
